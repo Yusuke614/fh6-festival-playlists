@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FH6 Series 06 Week 1 Summer - Festival Playlist & Tunes Dashboard</title>
+<style>
+    :root {
+      --bg-dark: #0a0d14;
+      --card-bg: #141822;
+      --card-border: #222938;
+      --accent-pink: #ff0055;
+      --accent-cyan: #00e5ff;
+      --accent-yellow: #ffe600;
+      --accent-green: #00ff88;
+      --accent-orange: #ff7700;
+      --text-main: #f0f3f8;
+      --text-muted: #8e98aa;
+      --text-dim: #5c6677;
+      --badge-bg: #1c2230;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+      padding: 24px;
+    }
+    .dashboard-container { max-width: 1360px; margin: 0 auto; }
+    header {
+      background: linear-gradient(135deg, #1a202e 0%, #0f121a 100%);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 24px 32px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; width: 6px; height: 100%;
+      background: linear-gradient(to bottom, var(--accent-pink), var(--accent-cyan));
+    }
+    .header-top {
+      display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 16px;
+    }
+    .title-group h1 {
+      font-size: 28px; font-weight: 800; letter-spacing: -0.5px; display: flex; align-items: center; gap: 12px;
+    }
+    .title-group h1 span.tag {
+      background: var(--accent-pink); color: #fff; font-size: 13px; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px;
+    }
+    .subtitle { color: var(--text-muted); font-size: 15px; margin-top: 6px; }
+    .season-dates {
+      background: var(--badge-bg); border: 1px solid var(--card-border); padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 600; color: var(--accent-cyan);
+    }
+    .roster-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; margin-bottom: 24px;
+    }
+    .roster-card {
+      background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .roster-info h4 { font-size: 15px; font-weight: 700; }
+    .roster-info h4 a { color: var(--text-main); text-decoration: none; }
+    .roster-info h4 a:hover { color: var(--accent-cyan); }
+    .roster-info p { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .status-badge {
+      font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 4px; text-transform: uppercase;
+    }
+    .status-active { background: rgba(0, 255, 136, 0.15); color: var(--accent-green); border: 1px solid rgba(0, 255, 136, 0.3); }
+    .status-inactive { background: rgba(255, 0, 85, 0.15); color: var(--accent-pink); border: 1px solid rgba(255, 0, 85, 0.3); }
+    
+    /* Progress Bar */
+    .progress-bar-container {
+      background: #0a0d13; border-radius: 8px; height: 12px; width: 100%; overflow: hidden; margin: 14px 0 8px 0; border: 1px solid var(--card-border);
+    }
+    .progress-bar-fill {
+      height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-pink), var(--accent-cyan)); transition: width 0.3s ease;
+    }
+    .progress-stats {
+      display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--text-muted); font-weight: 500; margin-top: 8px;
+    }
+    .stat-line {
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;
+    }
+    
+    /* Controls Bar */
+    .nav-bar {
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; background: #11151e; border: 1px solid var(--card-border); border-radius: 8px; padding: 12px 18px; margin-bottom: 24px;
+    }
+    .filter-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+    .filter-btn, .collapse-toggle-all {
+      background: var(--badge-bg); border: 1px solid var(--card-border); color: var(--text-muted); padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    }
+    .filter-btn:hover, .collapse-toggle-all:hover { color: var(--text-main); border-color: rgba(255, 255, 255, 0.2); }
+    .filter-btn.active { background: var(--accent-cyan); color: #000; border-color: var(--accent-cyan); font-weight: 700; }
+    .collapse-toggle-all { background: #1f2738; color: var(--accent-cyan); border-color: #2e3a52; }
+    .collapse-toggle-all:hover { background: var(--accent-cyan); color: #000; }
+    
+    .search-input {
+      background: #090c12; border: 1px solid var(--card-border); color: var(--text-main); padding: 8px 14px; border-radius: 6px; font-size: 13px; min-width: 250px; outline: none;
+    }
+    .search-input:focus { border-color: var(--accent-cyan); }
+    
+    /* Collapsible Card */
+    .collapsible-card {
+      background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; margin-bottom: 16px; overflow: hidden; transition: border-color 0.2s;
+    }
+    .collapsible-card:hover { border-color: #2e384c; }
+    .card-header {
+      padding: 16px 20px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none; background: #161c28; border-bottom: 1px solid transparent; transition: background 0.2s;
+    }
+    .card-header:hover { background: #1b2333; }
+    .collapsible-card.active .card-header { border-bottom-color: var(--card-border); }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .arrow-indicator {
+      font-size: 13px; color: var(--accent-cyan); transition: transform 0.2s ease; display: inline-block; width: 14px; text-align: center;
+    }
+    .collapsible-card.collapsed .arrow-indicator { transform: rotate(-90deg); }
+    .card-title { font-size: 16px; font-weight: 700; color: var(--text-main); }
+    .badge-group { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .badge {
+      font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 4px; text-transform: uppercase;
+    }
+    .badge-pts { background: rgba(0, 229, 255, 0.12); color: var(--accent-cyan); border: 1px solid rgba(0, 229, 255, 0.25); }
+    .badge-class { background: rgba(255, 230, 0, 0.12); color: var(--accent-yellow); border: 1px solid rgba(255, 230, 0, 0.25); }
+    .badge-champ { background: rgba(255, 0, 85, 0.12); color: var(--accent-pink); border: 1px solid rgba(255, 0, 85, 0.25); }
+    .badge-stunt { background: rgba(0, 255, 136, 0.12); color: var(--accent-green); border: 1px solid rgba(0, 255, 136, 0.25); }
+    
+    /* Collapsible Content */
+    .collapsible-content {
+      padding: 18px 20px; display: block;
+    }
+    .collapsible-card.collapsed .collapsible-content { display: none; }
+    
+    /* Reward Card Grid - Dedicated Layout */
+    .reward-card-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 16px;
+    }
+    .reward-item-box {
+      background: #0f131c; border: 1px solid var(--card-border); border-radius: 8px; padding: 14px 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px;
+    }
+    .reward-label-row {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .reward-threshold { font-size: 12px; font-weight: 800; color: var(--accent-cyan); text-transform: uppercase; }
+    .reward-item-name { font-size: 15px; font-weight: 700; color: #fff; }
+    .reward-item-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+    .reward-status-pill {
+      font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-block; width: fit-content; margin-top: 4px;
+    }
+    .rsp-pending { background: rgba(255, 255, 255, 0.06); color: var(--text-muted); }
+    .rsp-unlocked { background: rgba(0, 255, 136, 0.2); color: var(--accent-green); border: 1px solid rgba(0, 255, 136, 0.4); }
+    
+    /* Checkable Item */
+    .item-check-row {
+      display: flex; align-items: flex-start; gap: 14px; padding: 12px 14px; background: #11151f; border: 1px solid var(--card-border); border-radius: 8px; margin-bottom: 12px;
+    }
+    .item-check-row input[type="checkbox"] {
+      margin-top: 3px; width: 18px; height: 18px; accent-color: var(--accent-cyan); cursor: pointer;
+    }
+    .task-content { flex: 1; }
+    .task-title { font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 2px; }
+    .task-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 4px; }
+    .reward-pill {
+      display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; background: #1a2233; color: var(--accent-yellow); padding: 2px 10px; border-radius: 4px; border: 1px solid rgba(255, 230, 0, 0.2); margin-top: 4px;
+    }
+    
+    /* Meta Details List */
+    .meta-list { list-style: none; margin: 10px 0 16px 0; display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
+    .meta-item { display: flex; align-items: baseline; gap: 8px; }
+    .meta-label { font-weight: 700; color: var(--text-muted); min-width: 110px; }
+    
+    /* Tunes Subgrid */
+    .tunes-subgrid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 12px; margin-top: 14px;
+    }
+    .tune-pill-card {
+      background: #0d111a; border: 1px solid var(--card-border); border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px;
+    }
+    .tuner-badge {
+      font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 3px; text-transform: uppercase; display: inline-block; margin-bottom: 4px;
+    }
+    .tb-ollumi { background: rgba(0, 229, 255, 0.15); color: var(--accent-cyan); border: 1px solid rgba(0, 229, 255, 0.3); }
+    .tb-paper { background: rgba(255, 119, 0, 0.15); color: var(--accent-orange); border: 1px solid rgba(255, 119, 0, 0.3); }
+    .tb-django { background: rgba(0, 255, 136, 0.15); color: var(--accent-green); border: 1px solid rgba(0, 255, 136, 0.3); }
+    .tb-beau { background: rgba(255, 0, 85, 0.15); color: var(--accent-pink); border: 1px solid rgba(255, 0, 85, 0.3); }
+    .tune-car-name { font-size: 13px; font-weight: 700; color: var(--text-main); }
+    .tune-detail-text { font-size: 12px; color: var(--text-muted); }
+    .sharecode-row {
+      display: flex; align-items: center; justify-content: space-between; background: #161c28; padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.05); margin-top: 4px;
+    }
+    .sc-val { font-family: monospace; font-size: 13px; font-weight: 700; letter-spacing: 1px; color: var(--accent-yellow); }
+    .copy-sm-btn {
+      background: var(--badge-bg); border: 1px solid var(--card-border); color: var(--text-main); font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; cursor: pointer; transition: all 0.2s;
+    }
+    .copy-sm-btn:hover { background: var(--accent-cyan); color: #000; }
+    
+    /* Tip Box */
+    .tip-box {
+      background: rgba(0, 229, 255, 0.05); border-left: 3px solid var(--accent-cyan); padding: 10px 14px; border-radius: 0 6px 6px 0; font-size: 12px; color: var(--text-muted); margin: 12px 0;
+    }
+    .tip-box strong { color: var(--text-main); }
+    
+    /* Toast */
+    #toast {
+      visibility: hidden; min-width: 250px; background-color: #1e2638; color: #fff; text-align: center; border-radius: 8px; padding: 12px 20px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 14px; font-weight: 600; border: 1px solid var(--accent-cyan); box-shadow: 0 8px 24px rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.3s, visibility 0.3s;
+    }
+    #toast.show { visibility: visible; opacity: 1; }
+    
+    footer {
+      text-align: center; margin-top: 40px; color: var(--text-dim); font-size: 13px; border-top: 1px solid var(--card-border); padding-top: 20px;
+    }
+    footer a { color: var(--text-muted); text-decoration: none; }
+    footer a:hover { color: var(--accent-cyan); }
+  </style>
+</head>
+<body>
+
+<div class="dashboard-container">
+
+  <!-- Header -->
+  <header>
+    <div class="header-top">
+      <div class="title-group">
+        <h1>Forza Horizon 6 <span class="tag">Summer</span></h1>
+        <div class="subtitle">Theme: Horizon Meets - Summer (Wet Season)</div>
+      </div>
+      <div class="season-dates">
+        Series 06 • Week 1 | Active: Oct 8 – Oct 15, 2026
+      </div>
+    </div>
+
+    <!-- Creator Roster Grid (Ordered by Priority) -->
+    <div class="roster-grid">
+      <div class="roster-card">
+        <div class="roster-info">
+          <h4><a href="https://www.reddit.com/r/ForzaHorizon/" target="_blank" rel="noopener">awesomebeau</a></h4>
+          <p>Seasonal Hiatus</p>
+        </div>
+        <span class="status-badge status-inactive">Retired</span>
+      </div>
+      <div class="roster-card">
+        <div class="roster-info">
+          <h4><a href="https://www.reddit.com/r/ForzaHorizon/comments/1x0y99p/series_06_week_1_summer_seasonal_tunes_horizon/" target="_blank" rel="noopener">BigHeadDjango</a></h4>
+          <p>15 Tunes + PR Stunts &amp; Blueprints</p>
+        </div>
+        <span class="status-badge status-active">Active</span>
+      </div>
+      <div class="roster-card">
+        <div class="roster-info">
+          <h4><a href="https://www.reddit.com/r/ForzaHorizon/" target="_blank" rel="noopener">PaperHeartZero</a></h4>
+          <p>On Break (Feeling Unwell)</p>
+        </div>
+        <span class="status-badge status-inactive">On Break</span>
+      </div>
+      <div class="roster-card">
+        <div class="roster-info">
+          <h4><a href="https://www.reddit.com/r/ForzaHorizon/comments/1x0qz2a/fh6_series_6_summer_breakdown_and_rewards/" target="_blank" rel="noopener">ollumi &amp; Collaborators</a></h4>
+          <p>22 Competitive Tunes + Route Strategy</p>
+        </div>
+        <span class="status-badge status-active">Active</span>
+      </div>
+    </div>
+
+    <!-- Dynamic Progress Stats & Bar -->
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-stats">
+      <div class="stat-line">
+        <span id="completionProgressText">Completion Progress: 0% (0/19 events completed)</span>
+      </div>
+      <div class="stat-line">
+        <span>Season Rewards Target: <span id="collectedPoints" style="color:var(--accent-cyan); font-weight:700;">0 Pts</span> collected (<span id="rewardPointsMin">0/20 Pts Min</span> • <span id="rewardPointsMax">0/40 Pts Max</span>)</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls Bar -->
+  <div class="nav-bar">
+    <div class="filter-buttons">
+      <button class="filter-btn active" data-filter="all">All Events</button>
+      <button class="filter-btn" data-filter="rewards">Rewards</button>
+      <button class="filter-btn" data-filter="racing">Championships</button>
+      <button class="filter-btn" data-filter="stunts">PR Stunts</button>
+      <button class="filter-btn" data-filter="challenges">Challenges</button>
+      <button class="filter-btn" data-filter="online">Horizon Play</button>
+      <button class="collapse-toggle-all" id="toggleAllBtn">Collapse All ▾</button>
+    </div>
+    <input type="text" class="search-input" id="eventSearch" placeholder="Search events, cars, share codes...">
+  </div>
+
+  <!-- 1. Progress & Rewards Overview -->
+  <div class="collapsible-card active" data-card-id="s06_w1_rewards" data-category="rewards">
+    <div class="card-header">
+      <div class="header-left">
+        <span class="arrow-indicator">▼</span>
+        <span class="card-title">🏆 Series 06 &amp; Summer Season Progress Rewards</span>
+      </div>
+      <div class="badge-group">
+        <span class="badge badge-pts">53 PTS AVAILABLE</span>
+        <span class="badge badge-champ">EXCLUSIVES</span>
+      </div>
+    </div>
+    <div class="collapsible-content">
+      <div style="font-size: 13px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">
+        Summer Seasonal Rewards (40 Pts Max):
+      </div>
+      <div class="reward-card-grid">
+        <div class="reward-item-box">
+          <div class="reward-label-row">
+            <span class="reward-threshold">20 PTS SEASON REWARD</span>
+            <span class="reward-status-pill rsp-pending" id="statusPill20">Locked</span>
+          </div>
+          <div class="reward-item-name">2000 Honda Prelude Type SH</div>
+          <div class="reward-item-desc">Seasonal Exclusive • Class B 550 FWD. Cult-classic Japanese sports coupe featuring ATTS handling and high-revving VTEC power.</div>
+        </div>
+        <div class="reward-item-box">
+          <div class="reward-label-row">
+            <span class="reward-threshold">40 PTS SEASON REWARD</span>
+            <span class="reward-status-pill rsp-pending" id="statusPill40">Locked</span>
+          </div>
+          <div class="reward-item-name">1974 Toyota Corolla SR5</div>
+          <div class="reward-item-desc">Seasonal Exclusive • Class D 240 RWD. Lightweight vintage rear-wheel drive icon ready for competitive grassroots builds.</div>
+        </div>
+      </div>
+
+      <div style="font-size: 13px; font-weight: 700; color: var(--accent-pink); margin: 16px 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">
+        Series 06 Horizon Meets Overall Rewards:
+      </div>
+      <div class="reward-card-grid">
+        <div class="reward-item-box">
+          <div class="reward-label-row">
+            <span class="reward-threshold">80 PTS SERIES REWARD</span>
+          </div>
+          <div class="reward-item-name">2025 BMW M4 CS</div>
+          <div class="reward-item-desc">New to Horizon • Class S1 840 RWD. 543 hp competition sport coupe packing tuned twin-turbo inline-6 and track-focused chassis.</div>
+        </div>
+        <div class="reward-item-box">
+          <div class="reward-label-row">
+            <span class="reward-threshold">160 PTS SERIES REWARD</span>
+          </div>
+          <div class="reward-item-name">2015 Koenigsegg One:1</div>
+          <div class="reward-item-desc">Series Exclusive • Class S2 998 RWD. The legendary 1:1 power-to-weight megacar producing 1,360 PS.</div>
+        </div>
+      </div>
+
+      <div style="font-size: 13px; font-weight: 700; color: var(--accent-cyan); margin: 16px 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">
+        Monthly Rivals (Series 06 Overall &amp; Summer Contribution):
+      </div>
+      <div class="item-check-row" data-id="s06_task_monthly_rivals" data-points="1">
+        <input type="checkbox" id="task_s06_monthly_rivals">
+        <div class="task-content">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px;">
+            <div class="task-title">Monthly Rivals: Daikoku Circuit (Road Racing • Circuit)</div>
+            <span class="badge badge-pts">4 PTS TOTAL • 1 PT PER SEASON • ROAD CIRCUIT</span>
+          </div>
+          <div class="task-desc">Post a clean lap time in the 2025 BMW M4 CS on Daikoku Circuit. Completing once awards 1 point per season toward overall playlist completion.</div>
+          <div class="reward-pill">+1 PT Summer Season (+4 PTS Series Total) • Super Wheelspin</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Forzathon Weekly Challenge -->
+  <div class="collapsible-card active" data-card-id="s06_w1_weekly" data-category="challenges">
+    <div class="card-header">
+      <div class="header-left">
+        <span class="arrow-indicator">▼</span>
+        <span class="card-title">🚗 Weekly Challenge: "Turbocharged"</span>
+      </div>
+      <div class="badge-group">
+        <span class="badge badge-pts">5 PTS • 25,000 CR</span>
+        <span class="badge badge-class">1973 BMW 2002 TURBO</span>
+      </div>
+    </div>
+    <div class="collapsible-content">
+      <div class="item-check-row" data-id="s06_task_weekly" data-points="5">
+        <input type="checkbox" id="task_s06_weekly">
+        <div class="task-content">
+          <div class="task-title">Turbocharged — 4 Chapters</div>
+          <div class="task-desc">
+            • <strong>Chapter 1:</strong> Own and drive the 1973 BMW 2002 Turbo.<br>
+            • <strong>Chapter 2:</strong> Earn 4 Speed Skills in the 1973 BMW 2002 Turbo.<br>
+            • <strong>Chapter 3:</strong> Complete 2 Laps at the Hokubu Time Attack Circuit in the 1973 BMW 2002 Turbo.<br>
+            • <strong>Chapter 4:</strong> Earn 6 Stars at Speed Traps in the 1973 BMW 2002 Turbo (can repeat any speed trap).
+          </div>
+          <div class="reward-pill">+5 PTS • 25,000 CR</div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <strong>Pro Tip (from BigHeadDjango &amp; ollumi):</strong> BigHeadDjango's C Road v2 setup delivers smooth acceleration for circuit laps. Chapter 4 stars can be easily earned by hitting the main highway speed traps repeatedly.
+      </div>
+
+      <div style="font-weight: 700; color: var(--accent-cyan); font-size: 13px; text-transform: uppercase; margin: 14px 0 6px 0;">
+        Recommended Tunes (Creator Priority Order):
+      </div>
+      <div class="tunes-subgrid">
+        <!-- BigHeadDjango (1st Priority) -->
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-django">BigHeadDjango</span>
+            <div class="tune-car-name">1973 BMW 2002 Turbo (Road v2 Stock Look)</div>
+            <div class="tune-detail-text">C Road v2 No Aero Stock Look • Good accel • v2 smoother build</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">174 517 388</span>
+            <button class="copy-sm-btn" onclick="copyCode('174 517 388')">Copy</button>
+          </div>
+        </div>
+        <!-- ollumi & Collaborators -->
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">Noa Miyako</span>
+            <div class="tune-car-name">1973 BMW 2002 Turbo (Road &amp; Time Attack)</div>
+            <div class="tune-detail-text">B Class Road Strong • Excellent handling for Hokubu Time Attack laps</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">602 093 092</span>
+            <button class="copy-sm-btn" onclick="copyCode('602 093 092')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">ZVTCJAU</span>
+            <div class="tune-car-name">1973 BMW 2002 Turbo (Dirt &amp; Speed Traps)</div>
+            <div class="tune-detail-text">A Class Dirt/Speed • High top speed for speed skills and speed trap stars</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">810 199 895</span>
+            <button class="copy-sm-btn" onclick="copyCode('810 199 895')">Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Forzathon Daily Challenges -->
+  <div class="collapsible-card active" data-card-id="s06_w1_dailies" data-category="challenges">
+    <div class="card-header">
+      <div class="header-left">
+        <span class="arrow-indicator">▼</span>
+        <span class="card-title">📅 Daily Challenges (7 Challenges)</span>
+      </div>
+      <div class="badge-group">
+        <span class="badge badge-pts">7 PTS TOTAL</span>
+        <span class="badge badge-champ">1 PT &amp; 5,000 CR EACH</span>
+      </div>
+    </div>
+    <div class="collapsible-content">
+      <div class="item-check-row" data-id="s06_task_daily_thu" data-points="1">
+        <input type="checkbox" id="task_s06_daily_thu">
+        <div class="task-content">
+          <div class="task-title">Thursday: Sideways Style</div>
+          <div class="task-desc">Earn 5 Drift or E-Drift Skills in any vehicle.</div>
+          <div class="reward-pill">+1 PT • 5,000 CR</div>
+        </div>
+      </div>
+      <div class="item-check-row" data-id="s06_task_daily_fri" data-points="1">
+        <input type="checkbox" id="task_s06_daily_fri">
+        <div class="task-content">
+          <div class="task-title">Friday: Speedy Exit</div>
+          <div class="task-desc">Earn at least 1 Star from any Speed Trap in any vehicle.</div>
+          <div class="reward-pill">+1 PT • 5,000 CR</div>
+        </div>
+      </div>
+      <div class="item-check-row" data-id="s06_task_daily_sat" data-points="1">
+        <input type="checkbox" id="task_s06_daily_sat">
+        <div class="task-content">
+          <div class="task-title">Saturday: Hop, Skip, Jump</div>
+          <div class="task-desc">Earn 3 Kangaroo Skills (three Air Skills in rapid succession without breaking chain; snowy hills in Sotoyama Region are ideal).</div>
+          <div class="reward-pill">+1 PT • 5,000 CR</div>
+        </div>
+      </div>
+      <div class="item-check-row" data-id="s06_task_daily_sun" data-points="1">
+        <input type="checkbox" id="task_s06_daily_sun">
+        <div class="task-content">
+          <div class="task-title">Sunday: Pay It Forward</div>
+          <div class="task-desc">Send a Gift Drop to another player from a Barn Find location or festival hub.</div>
+          <div class="reward-pill">+1 PT • 5,000 CR</div>
+        </div>
+      </div>
+      <div class="item-check-row" data-id="s06_task_daily_mon" data-points="1">
+        <input type="checkbox" id="task_s06_daily_mon">
+        <div class="task-content">
+          <div class="task-title">Monday: Lucky Spin</div>
+          <div class="task-desc">Redeem a regular Wheelspin or Super Wheelspin from your menu.</div>
+          <div class="reward-pill">+1 PT • 5,000 CR</div>
+        </div>
+      </div>
+      <div class="item-check-row" data-id="s06_task_daily_tue" data-points="1">
+        <input type="checkbox" id="task_s06_daily_tue">
+        <div class="task-content">
+          <div class="task-title">Tuesday: Road Tripping</div>
+          <div class="task-desc">Drive 10.0 miles (16.0 kilometers) across Japan in any vehicle.</div>
+          <div class="reward-pill">+1 PT • 5,000 CR</div>
+        </div>
+      </div>
+      <div class="item-check-row" data-id="s06_task_daily_wed" data-points="1">
+        <input type="checkbox" id="task_s06_daily_wed">
+        <div class="task-content">
+          <div class="task-title">Wednesday: Score Keeper</div>
+          <div class="task-desc">Bank 15,000 Skill Score in a single combo.</div>
+          <div class="reward-pill">+1 PT • 5,000 CR</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Photo Challenge & Treasure Hunt -->
+  <div class="collapsible-card active" data-card-id="s06_w1_photo_treasure" data-category="challenges">
+    <div class="card-header">
+      <div class="header-left">
+        <span class="arrow-indicator">▼</span>
+        <span class="card-title">📸 Photo Challenge (#LightLunch) &amp; 🗺️ Treasure Hunt ("Ito Region")</span>
+      </div>
+      <div class="badge-group">
+        <span class="badge badge-pts">5 PTS TOTAL</span>
+        <span class="badge badge-champ">SUMMER SPECIALS</span>
+      </div>
+    </div>
+    <div class="collapsible-content">
+      <div class="item-check-row" data-id="s06_task_photo" data-points="2">
+        <input type="checkbox" id="task_s06_photo">
+        <div class="task-content">
+          <div class="task-title">Photo Challenge: #LightLunch</div>
+          <div class="task-desc">Take a photo of any Eclectic Domestic vehicle outside the 7-Eleven convenience store / car meet in the Ito Region.</div>
+          <div class="reward-pill">+2 PTS • 7-Eleven Uniform (clothing)</div>
+        </div>
+      </div>
+      <div class="item-check-row" data-id="s06_task_treasure" data-points="3">
+        <input type="checkbox" id="task_s06_treasure">
+        <div class="task-content">
+          <div class="task-title">Treasure Hunt: Follow the Photo Clue to Discover the Treasure! (Ito Region)</div>
+          <div class="task-desc">Locate and smash the hidden chest in the Ito Region on the grassy coastal overlook directly facing the Meoto Iwa rock landmark.</div>
+          <div class="reward-pill">+3 PTS • 100,000 CR</div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <strong>Pro Tip:</strong> For the Photo Challenge, the 1984 Honda City E II can be purchased from the Autoshow for only 7,500 CR. The 7-Eleven store is located adjacent to the new Konbini Dash Speed Trap in the Ito Region. The treasure chest is perched on the cliffside path looking out at the sacred rocks in the bay.
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Seasonal Championships -->
+  <!-- Championship 1 -->
+  <div class="collapsible-card active" data-card-id="s06_w1_champ1" data-category="racing">
+    <div class="card-header">
+      <div class="header-left">
+        <span class="arrow-indicator">▼</span>
+        <span class="card-title">🏁 Championship 1: "Bee Happy"</span>
+      </div>
+      <div class="badge-group">
+        <span class="badge badge-pts">5 PTS • Modern Rally B 600 • Dirt Racing</span>
+        <span class="badge badge-champ">DIRT RACING</span>
+      </div>
+    </div>
+    <div class="collapsible-content">
+      <ul class="meta-list">
+        <li class="meta-item"><span class="meta-label">Race Type:</span><span>Dirt Racing (Point-to-Point Trails &amp; Scramble Circuits)</span></li>
+        <li class="meta-item"><span class="meta-label">Car Restrictions:</span><span>Modern Rally (Class B 600)</span></li>
+        <li class="meta-item"><span class="meta-label">Tracks / Routes:</span><span>Kawazu Nanadaru Scramble (Scramble), Cherry Field Trail (Trail), Sunflower Scramble (Scramble)</span></li>
+      </ul>
+      <div class="item-check-row" data-id="s06_task_champ1" data-points="5">
+        <input type="checkbox" id="task_s06_champ1">
+        <div class="task-content">
+          <div class="task-title">Dirt Racing: Kawazu Nanadaru Scramble (Scramble), Cherry Field Trail (Trail), Sunflower Scramble (Scramble)</div>
+          <div class="task-desc">Defeat Highly Skilled Drivatars across 3 dirt and gravel courses.</div>
+          <div class="reward-pill">+5 PTS • 1970 Dodge Coronet Super Bee</div>
+        </div>
+      </div>
+      <div class="tip-box">
+        <strong>Pro Tip (from BigHeadDjango &amp; ollumi):</strong> Modern Rally cars provide great all-wheel drive stability on dirt. BigHeadDjango's Evo X and Imprezas provide smooth non-aero momentum across technical trails and scrambles.
+      </div>
+      <div style="font-weight: 700; color: var(--accent-cyan); font-size: 13px; text-transform: uppercase; margin: 14px 0 6px 0;">
+        Recommended Tunes (Creator Priority Order):
+      </div>
+      <div class="tunes-subgrid">
+        <!-- BigHeadDjango (1st Priority) -->
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-django">BigHeadDjango</span>
+            <div class="tune-car-name">2008 Mitsubishi Lancer Evolution X GSR</div>
+            <div class="tune-detail-text">B Dirt CC v1 No Aero Stock Look • Smooth • Good handling • Stock engine</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">293 138 917</span>
+            <button class="copy-sm-btn" onclick="copyCode('293 138 917')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-django">BigHeadDjango</span>
+            <div class="tune-car-name">2004 Subaru Impreza WRX STI</div>
+            <div class="tune-detail-text">B Dirt CC v1 No Aero Stock Look • High B class top speed</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">528 993 509</span>
+            <button class="copy-sm-btn" onclick="copyCode('528 993 509')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-django">BigHeadDjango</span>
+            <div class="tune-car-name">2008 Subaru Impreza WRX STI</div>
+            <div class="tune-detail-text">B Dirt CC v1 No Aero Stock Look • Smooth all-around rally handling</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">880 557 389</span>
+            <button class="copy-sm-btn" onclick="copyCode('880 557 389')">Copy</button>
+          </div>
+        </div>
+        <!-- ollumi & Collaborators -->
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">ollumi</span>
+            <div class="tune-car-name">2008 Subaru Impreza WRX STI</div>
+            <div class="tune-detail-text">Strong Setup • Balanced traction and responsive AWD launch for mixed dirt surfaces</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">295 947 338</span>
+            <button class="copy-sm-btn" onclick="copyCode('295 947 338')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">ollumi</span>
+            <div class="tune-car-name">2006 Mitsubishi Lancer Evolution IX MR</div>
+            <div class="tune-detail-text">Strong Setup • Sharp differential tuning for aggressive high-speed slides and technical scrambles</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">369 710 330</span>
+            <button class="copy-sm-btn" onclick="copyCode('369 710 330')">Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Championship 2 -->
+  <div class="collapsible-card active" data-card-id="s06_w1_champ2" data-category="racing">
+    <div class="card-header">
+      <div class="header-left">
+        <span class="arrow-indicator">▼</span>
+        <span class="card-title">🏁 Championship 2: "Ghost Hunter"</span>
+      </div>
+      <div class="badge-group">
+        <span class="badge badge-pts">5 PTS • Rally Monsters A 700 • Cross Country</span>
+        <span class="badge badge-champ">CROSS COUNTRY</span>
+      </div>
+    </div>
+    <div class="collapsible-content">
+      <ul class="meta-list">
+        <li class="meta-item"><span class="meta-label">Race Type:</span><span>Cross Country Racing (Point-to-Point Trails &amp; Cross Country Circuits)</span></li>
+        <li class="meta-item"><span class="meta-label">Car Restrictions:</span><span>Rally Monsters (Class A 700)</span></li>
+        <li class="meta-item"><span class="meta-label">Tracks / Routes:</span><span>Takashiro Cross Country (Trail), Oka Cross Country Circuit (Circuit), Temple Cross Country (Trail)</span></li>
+      </ul>
+      <div class="item-check-row" data-id="s06_task_champ2" data-points="5">
+        <input type="checkbox" id="task_s06_champ2">
+        <div class="task-content">
+          <div class="task-title">Cross Country: Takashiro Cross Country (Trail), Oka Cross Country Circuit (Circuit), Temple Cross Country (Trail)</div>
+          <div class="task-desc">Defeat Highly Skilled Drivatars across 3 rugged cross-country courses.</div>
+          <div class="reward-pill">+5 PTS • 1973 BMW 2002 Turbo</div>
+        </div>
+      </div>
+      <div class="tip-box">
+        <strong>Pro Tip (from BigHeadDjango &amp; ollumi):</strong> BigHeadDjango's Peugeot 207 Super 2000 and Ford Focus RS purist builds offer great low-speed pull out of rough terrain. Dedicated CC suspension damping handles heavy jumps without bottoming out.
+      </div>
+      <div style="font-weight: 700; color: var(--accent-cyan); font-size: 13px; text-transform: uppercase; margin: 14px 0 6px 0;">
+        Recommended Tunes (Creator Priority Order):
+      </div>
+      <div class="tunes-subgrid">
+        <!-- BigHeadDjango (1st Priority) -->
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-django">BigHeadDjango</span>
+            <div class="tune-car-name">2007 Peugeot 207 Super 2000</div>
+            <div class="tune-detail-text">A Dirt CC v1 True Purist Stock Aero • Smooth • Good low speed accel • Stock engine</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">310 183 039</span>
+            <button class="copy-sm-btn" onclick="copyCode('310 183 039')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-django">BigHeadDjango</span>
+            <div class="tune-car-name">2001 Ford #4 Ford Focus RS</div>
+            <div class="tune-detail-text">A Dirt CC v1 True Purist Stock Aero • Good accel • Anti-lag • Stock engine</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">403 553 256</span>
+            <button class="copy-sm-btn" onclick="copyCode('403 553 256')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-django">BigHeadDjango</span>
+            <div class="tune-car-name">1984 Opel Manta 400</div>
+            <div class="tune-detail-text">A Dirt CC v1 No Aero Stock Look • Max Power/Weight ratio</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">947 504 263</span>
+            <button class="copy-sm-btn" onclick="copyCode('947 504 263')">Copy</button>
+          </div>
+        </div>
+        <!-- ollumi & Collaborators -->
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">ollumi</span>
+            <div class="tune-car-name">1984 Opel Manta 400 (Pure Cross Country)</div>
+            <div class="tune-detail-text">Strong Setup • Custom long-travel CC suspension for harsh jumps and rough terrain</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">710 939 126</span>
+            <button class="copy-sm-btn" onclick="copyCode('710 939 126')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">peter lyj</span>
+            <div class="tune-car-name">2023 Lamborghini Huracán Sterrato</div>
+            <div class="tune-detail-text">High-revving V10 AWD with raised all-terrain ground clearance and quick recovery</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">157 672 967</span>
+            <button class="copy-sm-btn" onclick="copyCode('157 672 967')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">SR1 Rain</span>
+            <div class="tune-car-name">1985 Ford RS200 Evolution</div>
+            <div class="tune-detail-text">Lightweight group B agility and superior landing stability across rolling hills</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">109 572 061</span>
+            <button class="copy-sm-btn" onclick="copyCode('109 572 061')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">KapienPL</span>
+            <div class="tune-car-name">1985 Porsche #185 959 Prodrive Rally Raid</div>
+            <div class="tune-detail-text">Dakar rally raid heritage with strong low-end torque and planted high-speed manners</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">146 430 643</span>
+            <button class="copy-sm-btn" onclick="copyCode('146 430 643')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">Revelatus</span>
+            <div class="tune-car-name">2023 Porsche 911 Rallye</div>
+            <div class="tune-detail-text">Rear-engine traction advantage on muddy tracks and slippery grassy banks</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">143 246 529</span>
+            <button class="copy-sm-btn" onclick="copyCode('143 246 529')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">SlowBakedPanda</span>
+            <div class="tune-car-name">2018 Subaru WRX STI ARX Supercar</div>
+            <div class="tune-detail-text">Explosive launch speed and rapid corner rotation through technical obstacles</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">165 580 402</span>
+            <button class="copy-sm-btn" onclick="copyCode('165 580 402')">Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Championship 3 -->
+  <div class="collapsible-card active" data-card-id="s06_w1_champ3" data-category="racing">
+    <div class="card-header">
+      <div class="header-left">
+        <span class="arrow-indicator">▼</span>
+        <span class="card-title">🏁 Championship 3: "Vetting the Competition"</span>
+      </div>
+      <div class="badge-group">
+        <span class="badge badge-pts">5 PTS • Track Life S1 800 • Street Racing</span>
+        <span class="badge badge-champ">STREET RACING</span>
+      </div>
+    </div>
+    <div class="collapsible-content">
+      <ul class="meta-list">
+        <li class="meta-item"><span class="meta-label">Race Type:</span><span>Street Racing (Mountain Ascents, Descents &amp; Street Sprints)</span></li>
+        <li class="meta-item"><span class="meta-label">Car Restrictions:</span><span>Track Life (Class S1 800) — Horizon Special category</span></li>
+        <li class="meta-item"><span class="meta-label">Tracks / Routes:</span><span>Hokubu Ascent (Ascent), Norikura Descent (Descent), Kita Ine (Sprint)</span></li>
+      </ul>
+      <div class="item-check-row" data-id="s06_task_champ3" data-points="5">
+        <input type="checkbox" id="task_s06_champ3">
+        <div class="task-content">
+          <div class="task-title">Street Racing: Hokubu Ascent (Ascent), Norikura Descent (Descent), Kita Ine (Sprint)</div>
+          <div class="task-desc">Defeat Highly Skilled Drivatars across 3 demanding night street routes.</div>
+          <div class="reward-pill">+5 PTS • 1970 Chevrolet Corvette ZR-1</div>
+        </div>
+      </div>
+      <div class="tip-box">
+        <strong>Pro Tip (from BigHeadDjango &amp; ollumi):</strong> Track Life is a wide-open Horizon Special category. BigHeadDjango's Dodge Viper ACR, Huracán STO, and 458 Speciale offer stock-look stability, while the Ginetta G40 Junior dominates high-downforce technical corners.
+      </div>
+      <div style="font-weight: 700; color: var(--accent-cyan); font-size: 13px; text-transform: uppercase; margin: 14px 0 6px 0;">
+        Recommended Tunes (Creator Priority Order):
+      </div>
+      <div class="tunes-subgrid">
+        <!-- BigHeadDjango (1st Priority) -->
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-django">BigHeadDjango</span>
+            <div class="tune-car-name">2008 Dodge Viper SRT-10 ACR</div>
+            <div class="tune-detail-text">S1 Road v1 Stock Aero Stock Look • 7 gears • Stock engine</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">173 346 428</span>
+            <button class="copy-sm-btn" onclick="copyCode('173 346 428')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-django">BigHeadDjango</span>
+            <div class="tune-car-name">2020 Lamborghini Huracán STO</div>
+            <div class="tune-detail-text">S1 Road v1 Stock Aero Stock Look Meta • Good handling • Decent grip • 8 gears</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">176 727 834</span>
+            <button class="copy-sm-btn" onclick="copyCode('176 727 834')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-django">BigHeadDjango</span>
+            <div class="tune-car-name">2013 Ferrari 458 Speciale</div>
+            <div class="tune-detail-text">S1 Road v2 No Aero Stock Look • 7 gears • Responsive handling</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">181 944 171</span>
+            <button class="copy-sm-btn" onclick="copyCode('181 944 171')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-django">BigHeadDjango</span>
+            <div class="tune-car-name">2019 Ginetta G40 Junior</div>
+            <div class="tune-detail-text">S1 Road v1 Full Aero • High grip • Superb braking • Circuits specialist</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">175 061 037</span>
+            <button class="copy-sm-btn" onclick="copyCode('175 061 037')">Copy</button>
+          </div>
+        </div>
+        <!-- ollumi & Collaborators -->
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">ESV Ruinz</span>
+            <div class="tune-car-name">2019 Ginetta G40 Junior</div>
+            <div class="tune-detail-text">Meta+ Tier • Extreme downforce and agile cornering through mountain hairpins</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">171 788 620</span>
+            <button class="copy-sm-btn" onclick="copyCode('171 788 620')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">Noa Miyako</span>
+            <div class="tune-car-name">1991 Mazda #55 Mazda 787B</div>
+            <div class="tune-detail-text">Meta Tier (Snow Tires) • High downforce and screaming 4-rotor top-end speed</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">106 443 648</span>
+            <button class="copy-sm-btn" onclick="copyCode('106 443 648')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">LetzeLU</span>
+            <div class="tune-car-name">1983 Nissan #11 Tomica Skyline Turbo Super Silhouette</div>
+            <div class="tune-detail-text">Meta Tier • Massive top speed and straight-line pull on mountain descents</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">697 292 924</span>
+            <button class="copy-sm-btn" onclick="copyCode('697 292 924')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">ollumi</span>
+            <div class="tune-car-name">2021 McLaren 620R</div>
+            <div class="tune-detail-text">Meta Tier • Planted GT chassis with tremendous braking stability</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">439 741 670</span>
+            <button class="copy-sm-btn" onclick="copyCode('439 741 670')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">MSR Sam</span>
+            <div class="tune-car-name">2008 Dodge Viper SRT-10 ACR</div>
+            <div class="tune-detail-text">Meta Tier • Huge mechanical grip and lateral acceleration</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">154 739 768</span>
+            <button class="copy-sm-btn" onclick="copyCode('154 739 768')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">ollumi</span>
+            <div class="tune-car-name">2020 Lamborghini Huracán STO</div>
+            <div class="tune-detail-text">Meta Tier • Aerodynamic track weapon with sharp turn-in</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">116 446 762</span>
+            <button class="copy-sm-btn" onclick="copyCode('116 446 762')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">LetzeLU</span>
+            <div class="tune-car-name">1998 Nissan #23 Pennzoil Nismo Skyline GT-R</div>
+            <div class="tune-detail-text">Very Strong Tier • Iconic JGTC champion with planted AWD power delivery</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">722 266 510</span>
+            <button class="copy-sm-btn" onclick="copyCode('722 266 510')">Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Seasonal PR Stunts -->
+  <!-- PR Stunt 1: Danger Sign -->
+  <div class="collapsible-card active" data-card-id="s06_w1_pr_danger" data-category="stunts">
+    <div class="card-header">
+      <div class="header-left">
+        <span class="arrow-indicator">▼</span>
+        <span class="card-title">⚡ PR Stunt - Danger Sign: "Highway Jump"</span>
+      </div>
+      <div class="badge-group">
+        <span class="badge badge-pts">2 PTS • Porsche S1 800 • 853.0 ft</span>
+        <span class="badge badge-stunt">DANGER SIGN</span>
+      </div>
+    </div>
+    <div class="collapsible-content">
+      <div class="item-check-row" data-id="s06_task_pr_danger" data-points="2">
+        <input type="checkbox" id="task_s06_pr_danger">
+        <div class="task-content">
+          <div class="task-title">Danger Sign: Highway Jump (Target: 853.0 ft / 260.0 m)</div>
+          <div class="task-desc">Launch off the ramp in any S1 800 Porsche and clear at least 853.0 ft.</div>
+          <div class="reward-pill">+2 PTS • Wheelspin</div>
+        </div>
+      </div>
+      <div class="tip-box">
+        <strong>Pro Tip (from BigHeadDjango &amp; ollumi):</strong> BigHeadDjango recommends starting ~736 yards (~673 m) away on the south-east dirt trail V-bend, coasting through the left corner, and jumping slightly left-to-right off the ramp to maximize distance.
+      </div>
+      <div style="font-weight: 700; color: var(--accent-cyan); font-size: 13px; text-transform: uppercase; margin: 14px 0 6px 0;">
+        Recommended Tunes (Creator Priority Order):
+      </div>
+      <div class="tunes-subgrid">
+        <!-- BigHeadDjango (1st Priority) -->
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-django">BigHeadDjango</span>
+            <div class="tune-car-name">2021 Porsche 911 GT3</div>
+            <div class="tune-detail-text">S1 Road v1 Stock Aero Stock Look • Tested for all 3 PR stunts</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">614 313 460</span>
+            <button class="copy-sm-btn" onclick="copyCode('614 313 460')">Copy</button>
+          </div>
+        </div>
+        <!-- ollumi & Collaborators -->
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">ollumi</span>
+            <div class="tune-car-name">1987 Porsche #203 Porsche AG 961</div>
+            <div class="tune-detail-text">S1 Dirt Meta build with massive launch speed and stable trajectory</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">127 996 456</span>
+            <button class="copy-sm-btn" onclick="copyCode('127 996 456')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">GreetedDust8</span>
+            <div class="tune-car-name">1985 Porsche #185 959 Prodrive Rally Raid</div>
+            <div class="tune-detail-text">All-terrain suspension tuned for maximum jump distance</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">895 330 219</span>
+            <button class="copy-sm-btn" onclick="copyCode('895 330 219')">Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PR Stunt 2: Speed Trap -->
+  <div class="collapsible-card active" data-card-id="s06_w1_pr_speed" data-category="stunts">
+    <div class="card-header">
+      <div class="header-left">
+        <span class="arrow-indicator">▼</span>
+        <span class="card-title">⚡ PR Stunt - Speed Trap: "Konbini Dash"</span>
+      </div>
+      <div class="badge-group">
+        <span class="badge badge-pts">2 PTS • Porsche S1 800 • 125.0 mph</span>
+        <span class="badge badge-stunt">SPEED TRAP</span>
+      </div>
+    </div>
+    <div class="collapsible-content">
+      <div class="item-check-row" data-id="s06_task_pr_speed" data-points="2">
+        <input type="checkbox" id="task_s06_pr_speed">
+        <div class="task-content">
+          <div class="task-title">Speed Trap: Konbini Dash (Target: 125.0 mph / 201.17 km/h)</div>
+          <div class="task-desc">Trigger the speed trap in any S1 800 Porsche. This is an Evolving World PR Stunt located near the 7-Eleven store in Ito Region.</div>
+          <div class="reward-pill">+2 PTS • Wheelspin</div>
+        </div>
+      </div>
+      <div class="tip-box">
+        <strong>Pro Tip (from BigHeadDjango &amp; ollumi):</strong> BigHeadDjango recommends starting ~580 yards (~530 m) away at the north road T-point intersection for an easy high-speed run through the speed gate.
+      </div>
+      <div style="font-weight: 700; color: var(--accent-cyan); font-size: 13px; text-transform: uppercase; margin: 14px 0 6px 0;">
+        Recommended Tunes (Creator Priority Order):
+      </div>
+      <div class="tunes-subgrid">
+        <!-- BigHeadDjango (1st Priority) -->
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-django">BigHeadDjango</span>
+            <div class="tune-car-name">2021 Porsche 911 GT3</div>
+            <div class="tune-detail-text">S1 Road v1 Stock Aero Stock Look • High acceleration through speed trap</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">614 313 460</span>
+            <button class="copy-sm-btn" onclick="copyCode('614 313 460')">Copy</button>
+          </div>
+        </div>
+        <!-- ollumi & Collaborators -->
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">ollumi</span>
+            <div class="tune-car-name">1987 Porsche #203 Porsche AG 961</div>
+            <div class="tune-detail-text">S1 Dirt Meta build with rapid burst acceleration</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">127 996 456</span>
+            <button class="copy-sm-btn" onclick="copyCode('127 996 456')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">ollumi</span>
+            <div class="tune-car-name">1987 Porsche 959 (RWD Sprint)</div>
+            <div class="tune-detail-text">Strong Road Sprint RWD (enable Traction Control for stability)</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">161 324 045</span>
+            <button class="copy-sm-btn" onclick="copyCode('161 324 045')">Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PR Stunt 3: Time Attack -->
+  <div class="collapsible-card active" data-card-id="s06_w1_pr_timeattack" data-category="stunts">
+    <div class="card-header">
+      <div class="header-left">
+        <span class="arrow-indicator">▼</span>
+        <span class="card-title">⏱️ PR Stunt - Time Attack: "Soni Time Attack"</span>
+      </div>
+      <div class="badge-group">
+        <span class="badge badge-pts">3 PTS • Porsche S1 800 • Sub-0:49.000</span>
+        <span class="badge badge-stunt">TIME ATTACK</span>
+      </div>
+    </div>
+    <div class="collapsible-content">
+      <div class="item-check-row" data-id="s06_task_pr_timeattack" data-points="3">
+        <input type="checkbox" id="task_s06_pr_timeattack">
+        <div class="task-content">
+          <div class="task-title">Time Attack: Soni Time Attack (Target: 0:49.000 or faster)</div>
+          <div class="task-desc">Beat the target lap time of 49.000 seconds on the Soni Time Attack layout in any S1 800 Porsche.</div>
+          <div class="reward-pill">+3 PTS • Wheelspin</div>
+        </div>
+      </div>
+      <div class="tip-box">
+        <strong>Pro Tip (from BigHeadDjango &amp; ollumi):</strong> Soni is a technical circuit requiring maximum downforce and quick braking transitions around the fountain turns.
+      </div>
+      <div style="font-weight: 700; color: var(--accent-cyan); font-size: 13px; text-transform: uppercase; margin: 14px 0 6px 0;">
+        Recommended Tunes (Creator Priority Order):
+      </div>
+      <div class="tunes-subgrid">
+        <!-- BigHeadDjango (1st Priority) -->
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-django">BigHeadDjango</span>
+            <div class="tune-car-name">2021 Porsche 911 GT3</div>
+            <div class="tune-detail-text">S1 Road v1 Stock Aero Stock Look • Tested sub-49s time attack capabilities</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">614 313 460</span>
+            <button class="copy-sm-btn" onclick="copyCode('614 313 460')">Copy</button>
+          </div>
+        </div>
+        <!-- ollumi & Collaborators -->
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">SlowBakedPanda</span>
+            <div class="tune-car-name">2005 Porsche Cayman GT3 WTAC</div>
+            <div class="tune-detail-text">Dedicated WTAC aero and high-grip slicks for rapid rotation</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">151 977 434</span>
+            <button class="copy-sm-btn" onclick="copyCode('151 977 434')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">TIV4R</span>
+            <div class="tune-car-name">2022 Porsche 718 Cayman GT4 RS</div>
+            <div class="tune-detail-text">Track weapon with close-ratio PDK gearing tailored for sub-49s times</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">117 287 593</span>
+            <button class="copy-sm-btn" onclick="copyCode('117 287 593')">Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Horizon Life - The Trial -->
+  <div class="collapsible-card active" data-card-id="s06_w1_trial" data-category="racing">
+    <div class="card-header">
+      <div class="header-left">
+        <span class="arrow-indicator">▼</span>
+        <span class="card-title">⚡ Horizon Life - The Trial: "Aim for the Top"</span>
+      </div>
+      <div class="badge-group">
+        <span class="badge badge-pts">10 PTS • Total Muscle A 700 • Road Racing</span>
+        <span class="badge badge-champ">CO-OP TRIAL</span>
+      </div>
+    </div>
+    <div class="collapsible-content">
+      <ul class="meta-list">
+        <li class="meta-item"><span class="meta-label">Race Type:</span><span>Road Racing (Circuits &amp; Sprints)</span></li>
+        <li class="meta-item"><span class="meta-label">Car Restrictions:</span><span>Total Muscle (Classic, Retro, Modern Muscle) • Class A 700</span></li>
+        <li class="meta-item"><span class="meta-label">Tracks / Routes:</span><span>Soni Circuit (Circuit), Hokubu Circuit (Circuit), Shikisai Sprint (Sprint)</span></li>
+      </ul>
+      <div class="item-check-row" data-id="s06_task_trial" data-points="10">
+        <input type="checkbox" id="task_s06_trial">
+        <div class="task-content">
+          <div class="task-title">Co-op Championship: Soni Circuit (Circuit), Hokubu Circuit (Circuit), Shikisai Sprint (Sprint)</div>
+          <div class="task-desc">Defeat Unbeatable Drivatars with a team of fellow players across 3 road races.</div>
+          <div class="reward-pill">+10 PTS • 2017 Volkswagen #34 Andretti Rally Cross Beetle</div>
+        </div>
+      </div>
+      <div class="tip-box">
+        <strong>Pro Tip (from BigHeadDjango &amp; ollumi):</strong> Total Muscle is a Horizon Special category found by filtering Classic, Retro, and Modern Muscle. BigHeadDjango's Corvette Z06 and HSV GTS provide fast, high-top-speed setups. Soni and Hokubu are tiny circuits where heavy muscle cars can easily cause pile-ups; get ahead early with a balanced handling setup.
+      </div>
+      <div style="font-weight: 700; color: var(--accent-cyan); font-size: 13px; text-transform: uppercase; margin: 14px 0 6px 0;">
+        Recommended Tunes (Creator Priority Order):
+      </div>
+      <div class="tunes-subgrid">
+        <!-- BigHeadDjango (1st Priority) -->
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-django">BigHeadDjango</span>
+            <div class="tune-car-name">2002 Chevrolet Corvette Z06</div>
+            <div class="tune-detail-text">A Road v1 No Aero Stock Look • Fast • High A class top speed • 7 gears • Stock engine</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">158 906 911</span>
+            <button class="copy-sm-btn" onclick="copyCode('158 906 911')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-django">BigHeadDjango</span>
+            <div class="tune-car-name">2014 HSV GEN-F GTS</div>
+            <div class="tune-detail-text">A Road v2 Stock Aero Stock Look • Fast • Strong accel • v2 smoother build</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">250 331 392</span>
+            <button class="copy-sm-btn" onclick="copyCode('250 331 392')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-django">BigHeadDjango</span>
+            <div class="tune-car-name">1999 Dodge Viper GTS ACR</div>
+            <div class="tune-detail-text">A Road v1 No Aero Stock Look • 7 gears • Stock engine • Balanced grip</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">744 081 898</span>
+            <button class="copy-sm-btn" onclick="copyCode('744 081 898')">Copy</button>
+          </div>
+        </div>
+        <!-- ollumi & Collaborators -->
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">ollumi</span>
+            <div class="tune-car-name">2024 Chevrolet Camaro ZL1 (Meta Balanced)</div>
+            <div class="tune-detail-text">Meta Tier • High top-end speed and predictable turn-in</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">246 082 066</span>
+            <button class="copy-sm-btn" onclick="copyCode('246 082 066')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">TheDannny</span>
+            <div class="tune-car-name">2024 Chevrolet Camaro ZL1 (Circuit Specialist)</div>
+            <div class="tune-detail-text">Meta Tier • Lighter chassis, superior rotation on tight circuits</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">155 615 663</span>
+            <button class="copy-sm-btn" onclick="copyCode('155 615 663')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">ollumi</span>
+            <div class="tune-car-name">2024 Ford Mustang GT</div>
+            <div class="tune-detail-text">Very Strong Tier • Strong mid-range power out of slow corners</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">446 625 665</span>
+            <button class="copy-sm-btn" onclick="copyCode('446 625 665')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">Revelatus</span>
+            <div class="tune-car-name">2016 Cadillac ATS-V</div>
+            <div class="tune-detail-text">Very Strong Tier • Agile twin-turbo V6 platform</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">870 123 267</span>
+            <button class="copy-sm-btn" onclick="copyCode('870 123 267')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">MSR Sola</span>
+            <div class="tune-car-name">2014 HSV GEN-F GTS</div>
+            <div class="tune-detail-text">Very Strong Tier • Supercharged Australian powerhouse with immense corner grip</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">418 106 161</span>
+            <button class="copy-sm-btn" onclick="copyCode('418 106 161')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">Noa Miyako</span>
+            <div class="tune-car-name">2002 Chevrolet Corvette Z06</div>
+            <div class="tune-detail-text">Lightweight retro racer with sharp handling transitions</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">152 550 978</span>
+            <button class="copy-sm-btn" onclick="copyCode('152 550 978')">Copy</button>
+          </div>
+        </div>
+        <div class="tune-pill-card">
+          <div>
+            <span class="tuner-badge tb-ollumi">Rainwall TV</span>
+            <div class="tune-car-name">1999 Dodge Viper GTS ACR (Purist Build)</div>
+            <div class="tune-detail-text">Purist Build • Stock V10 character and authentic handling</div>
+          </div>
+          <div class="sharecode-row">
+            <span class="sc-val">380 592 012</span>
+            <button class="copy-sm-btn" onclick="copyCode('380 592 012')">Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Horizon Play Multiplayer Events -->
+  <div class="collapsible-card active" data-card-id="s06_w1_horizon_play" data-category="online">
+    <div class="card-header">
+      <div class="header-left">
+        <span class="arrow-indicator">▼</span>
+        <span class="card-title">🌐 Horizon Play Events</span>
+      </div>
+      <div class="badge-group">
+        <span class="badge badge-pts">3 PTS TOTAL</span>
+        <span class="badge badge-stunt">MULTIPLAYER</span>
+      </div>
+    </div>
+    <div class="collapsible-content">
+      <div class="item-check-row" data-id="s06_task_play" data-points="3">
+        <input type="checkbox" id="task_s06_play">
+        <div class="task-content">
+          <div class="task-title">Horizon Play: Complete a Horizon Drift Championship</div>
+          <div class="task-desc">Queue via the Horizon Play menu and complete a full 3-event Horizon Drift Championship playlist.</div>
+          <div class="reward-pill">+3 PTS • White Haori (clothing)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Forza Horizon 6 Festival Playlist &amp; Community Tunes Tracker • Series 06 Week 1 (Summer)</p>
+    <p style="margin-top: 4px; font-size: 11px;">Tuning data sourced from Reddit r/ForzaHorizon creators: <a href="https://www.reddit.com/r/ForzaHorizon/" target="_blank">awesomebeau</a>, <a href="https://www.reddit.com/r/ForzaHorizon/comments/1x0y99p/series_06_week_1_summer_seasonal_tunes_horizon/" target="_blank">BigHeadDjango</a>, <a href="https://www.reddit.com/r/ForzaHorizon/" target="_blank">PaperHeartZero</a>, and <a href="https://www.reddit.com/r/ForzaHorizon/comments/1x0qz2a/fh6_series_6_summer_breakdown_and_rewards/" target="_blank">ollumi &amp; Collaborators</a>.</p>
+  </footer>
+
+</div>
+
+<!-- Toast Notification -->
+<div id="toast">Share Code copied to clipboard!</div>
+
+<script>
+  const STORAGE_PREFIX = "fh6_s06_w1_v3_";
+  const checkboxes = document.querySelectorAll('.item-check-row input[type="checkbox"]');
+  const progressBarFill = document.getElementById("progressFill");
+  const completionText = document.getElementById("completionProgressText");
+  const collectedPointsEl = document.getElementById("collectedPoints");
+  const rewardPointsMinEl = document.getElementById("rewardPointsMin");
+  const rewardPointsMaxEl = document.getElementById("rewardPointsMax");
+  const statusPill20 = document.getElementById("statusPill20");
+  const statusPill40 = document.getElementById("statusPill40");
+  const toast = document.getElementById("toast");
+
+  // Load Checkbox States
+  checkboxes.forEach(function(cb) {
+    const row = cb.closest('.item-check-row');
+    const id = row.getAttribute('data-id');
+    const saved = localStorage.getItem(STORAGE_PREFIX + id);
+    if (saved === 'true') {
+      cb.checked = true;
+    }
+    cb.addEventListener('change', function() {
+      localStorage.setItem(STORAGE_PREFIX + id, cb.checked);
+      updateProgress();
+    });
+  });
+
+  // Calculate & Update Progress
+  function updateProgress() {
+    let completedCount = 0;
+    let currentPoints = 0;
+    const totalCount = checkboxes.length;
+
+    checkboxes.forEach(function(cb) {
+      const row = cb.closest('.item-check-row');
+      const pts = parseInt(row.getAttribute('data-points') || "0", 10);
+      if (cb.checked) {
+        completedCount++;
+        currentPoints += pts;
+      }
+    });
+
+    const percent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+    progressBarFill.style.width = percent + "%";
+    completionText.textContent = "Completion Progress: " + percent + "% (" + completedCount + "/" + totalCount + " events completed)";
+    
+    // Rewards Target line
+    if (collectedPointsEl) collectedPointsEl.textContent = currentPoints + " Pts";
+    if (rewardPointsMinEl) {
+      if (currentPoints >= 20) {
+        rewardPointsMinEl.innerHTML = '<span style="color:var(--accent-green); font-weight:700;">' + Math.min(currentPoints, 20) + '/20 Pts Min (Unlocked! ✓)</span>';
+      } else {
+        rewardPointsMinEl.textContent = currentPoints + '/20 Pts Min';
+      }
+    }
+    if (rewardPointsMaxEl) {
+      if (currentPoints >= 40) {
+        rewardPointsMaxEl.innerHTML = '<span style="color:var(--accent-green); font-weight:700;">' + Math.min(currentPoints, 40) + '/40 Pts Max (Unlocked! ✓)</span>';
+      } else {
+        rewardPointsMaxEl.textContent = currentPoints + '/40 Pts Max';
+      }
+    }
+
+    if (currentPoints >= 40) {
+      statusPill20.textContent = "Unlocked! ✓";
+      statusPill20.className = "reward-status-pill rsp-unlocked";
+      statusPill40.textContent = "Unlocked! ✓";
+      statusPill40.className = "reward-status-pill rsp-unlocked";
+    } else if (currentPoints >= 20) {
+      statusPill20.textContent = "Unlocked! ✓";
+      statusPill20.className = "reward-status-pill rsp-unlocked";
+      statusPill40.textContent = "Locked";
+      statusPill40.className = "reward-status-pill rsp-pending";
+    } else {
+      statusPill20.textContent = "Locked";
+      statusPill20.className = "reward-status-pill rsp-pending";
+      statusPill40.textContent = "Locked";
+      statusPill40.className = "reward-status-pill rsp-pending";
+    }
+  }
+
+  // Collapsible Accordion logic
+  const cards = document.querySelectorAll('.collapsible-card');
+  cards.forEach(function(card) {
+    const cardId = card.getAttribute('data-card-id');
+    const header = card.querySelector('.card-header');
+    
+    // Load collapse state
+    const isCollapsed = localStorage.getItem(STORAGE_PREFIX + "collapse_" + cardId);
+    if (isCollapsed === 'true') {
+      card.classList.add('collapsed');
+    }
+
+    header.addEventListener('click', function() {
+      card.classList.toggle('collapsed');
+      localStorage.setItem(STORAGE_PREFIX + "collapse_" + cardId, card.classList.contains('collapsed'));
+      checkToggleAllButtonText();
+    });
+  });
+
+  // Toggle All Button
+  const toggleAllBtn = document.getElementById("toggleAllBtn");
+  let allCollapsed = false;
+
+  function checkToggleAllButtonText() {
+    const total = cards.length;
+    const collapsedCount = document.querySelectorAll('.collapsible-card.collapsed').length;
+    if (collapsedCount === total) {
+      toggleAllBtn.textContent = "Expand All ▴";
+      allCollapsed = true;
+    } else {
+      toggleAllBtn.textContent = "Collapse All ▾";
+      allCollapsed = false;
+    }
+  }
+
+  toggleAllBtn.addEventListener('click', function() {
+    allCollapsed = !allCollapsed;
+    cards.forEach(card => {
+      const cardId = card.getAttribute('data-card-id');
+      if (allCollapsed) {
+        card.classList.add('collapsed');
+        localStorage.setItem(STORAGE_PREFIX + "collapse_" + cardId, 'true');
+      } else {
+        card.classList.remove('collapsed');
+        localStorage.setItem(STORAGE_PREFIX + "collapse_" + cardId, 'false');
+      }
+    });
+    toggleAllBtn.textContent = allCollapsed ? "Expand All ▴" : "Collapse All ▾";
+  });
+
+  // Filter category buttons
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  filterBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      filterBtns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      const filter = btn.getAttribute('data-filter');
+      cards.forEach(function(card) {
+        const cat = card.getAttribute('data-category');
+        if (filter === 'all' || cat === filter) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Live Search filter
+  const eventSearch = document.getElementById("eventSearch");
+  eventSearch.addEventListener('input', function(e) {
+    const q = e.target.value.toLowerCase().trim();
+    cards.forEach(function(card) {
+      const text = card.textContent.toLowerCase();
+      if (!q || text.includes(q)) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+
+  // Share code copy helper
+  window.copyCode = function(code) {
+    navigator.clipboard.writeText(code).then(function() {
+      toast.textContent = "Share Code " + code + " copied to clipboard!";
+      toast.className = "show";
+      setTimeout(function() { toast.className = toast.className.replace("show", ""); }, 2500);
+    }).catch(function(err) {
+      console.error("Clipboard copy failed:", err);
+    });
+  };
+
+  // Initial Run
+  updateProgress();
+  checkToggleAllButtonText();
+</script>
+
+</body>
+</html>
