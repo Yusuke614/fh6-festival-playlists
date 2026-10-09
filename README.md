@@ -8,10 +8,11 @@ Interactive, responsive dashboards and reference guides for weekly *Forza Horizo
 
 ## Current Active Season
 
-* **Series:** Series 05 — *British Automotive*
-* **Season:** Week 4 — Spring (Hot Season)
-* **Active Window:** October 1 – October 8, 2026
-* **Season Rewards:** 2002 Lotus Esprit V8 (20 Pts) • 2023 Lotus Emira (40 Pts)
+* **Series:** Series 06 — *Horizon Meets*
+* **Season:** Week 1 — Summer (Wet Season)
+* **Active Window:** October 8 – October 15, 2026
+* **Season Rewards:** 2000 Honda Prelude Type SH (20 Pts) • 1974 Toyota Corolla SR5 (40 Pts)
+* **Series Rewards:** 2025 BMW M4 CS (80 Pts) • 2015 Koenigsegg One:1 (160 Pts)
 
 ---
 
@@ -31,8 +32,8 @@ Interactive, responsive dashboards and reference guides for weekly *Forza Horizo
 fh6-festival-playlists/
 ├── README.md                                         # Project documentation
 ├── index.html                                        # Currently active seasonal dashboard
-├── FH6_Series05_Week4_Spring_Dashboard_Main_v4.html   # Season archive copy
-└── FH6_Series05_Week4_Spring_Dashboard_Main_v4.txt    # Plain-text companion guide
+├── FH6_Series06_Week1_Summer_Dashboard_Main_v3.html   # Season archive copy (Revision v3)
+└── FH6_Series06_Week1_Summer_Dashboard_Main_v3.txt    # Plain-text companion guide (Revision v3)
 ```
 
 ---
@@ -41,10 +42,10 @@ fh6-festival-playlists/
 
 Tuning configurations and share codes are compiled from respected community creators across Reddit [r/ForzaHorizon](https://www.reddit.com/r/ForzaHorizon/):
 
-* **awesomebeau**
-* **BigHeadDjango**
-* **PaperHeartZero**
-* **ollumi & Collaborators** (including KapienPL, LogikJ, Revelatus, SlowBakedPanda, SR1 Rain, TheDannny, TheGillesMuller, and others)
+* **awesomebeau** (Retired / Stepped Down)
+* **BigHeadDjango** (Active • 15 Tunes, PR Stunts & Blueprints)
+* **PaperHeartZero** (On Break • Recovering)
+* **ollumi & Collaborators** (Active • including KapienPL, LetzeLU, MSR Sam, MSR Sola, Noa Miyako, peter lyj, Rainwall TV, Revelatus, SlowBakedPanda, SR1 Rain, TheDannny, TIV4R, ZVTCJAU, and others)
 
 Playlist objectives and event schedules are sourced from official *Forza Horizon 6* festival updates.
 
