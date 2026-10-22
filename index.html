@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FH6 Series 06 Week 2 Autumn - Festival Playlist & Tunes Dashboard</title>
-<style>
+  <title>FH6 Series 06 Week 3 Winter - Festival Playlist & Tunes Dashboard</title>
+  <style>
     :root {
       --bg-dark: #0a0d14;
       --card-bg: #141822;
@@ -123,6 +123,7 @@
     .badge-group { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
     .badge {
       font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 4px; text-transform: uppercase;
+      white-space: normal; line-height: 1.35; word-break: break-word;
     }
     .badge-pts { background: rgba(0, 229, 255, 0.12); color: var(--accent-cyan); border: 1px solid rgba(0, 229, 255, 0.25); }
     .badge-class { background: rgba(255, 230, 0, 0.12); color: var(--accent-yellow); border: 1px solid rgba(255, 230, 0, 0.25); }
@@ -135,7 +136,7 @@
     }
     .collapsible-card.collapsed .collapsible-content { display: none; }
     
-    /* Reward Card Grid - Dedicated Layout */
+    /* Reward Card Grid */
     .reward-card-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 16px;
     }
@@ -168,41 +169,26 @@
       display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; background: #1a2233; color: var(--accent-yellow); padding: 2px 10px; border-radius: 4px; border: 1px solid rgba(255, 230, 0, 0.2); margin-top: 4px;
     }
     
-    /* Meta Details List */
-    .meta-list { list-style: none; margin: 10px 0 16px 0; display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
-    .meta-item { display: flex; align-items: baseline; gap: 8px; }
-    .meta-label { font-weight: 700; color: var(--text-muted); min-width: 110px; }
-    
-    /* Tunes Subgrid */
-    .tunes-subgrid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 12px; margin-top: 14px;
+    /* Tune Card Grid */
+    .tune-card-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-top: 10px;
     }
-    .tune-pill-card {
-      background: #0d111a; border: 1px solid var(--card-border); border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px;
+    .tune-card {
+      background: #0d111a; border: 1px solid var(--card-border); border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; justify-content: space-between; gap: 6px;
     }
-    .tuner-badge {
-      font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 3px; text-transform: uppercase; display: inline-block; margin-bottom: 4px;
+    .tune-car-name { font-size: 14px; font-weight: 700; color: #fff; }
+    .tune-creator { font-size: 12px; color: var(--accent-cyan); font-weight: 600; }
+    .tune-creator .creator-name { color: #fff; font-weight: 700; }
+    .tune-stats { font-size: 12px; color: var(--accent-yellow); font-weight: 600; }
+    .tune-notes { font-size: 12px; color: var(--text-muted); line-height: 1.35; }
+    .tune-code-row {
+      display: flex; align-items: center; justify-content: space-between; background: #161c28; padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.05); margin-top: 6px;
     }
-    .tb-ollumi { background: rgba(0, 229, 255, 0.15); color: var(--accent-cyan); border: 1px solid rgba(0, 229, 255, 0.3); }
-    .tb-paper { background: rgba(255, 119, 0, 0.15); color: var(--accent-orange); border: 1px solid rgba(255, 119, 0, 0.3); }
-    .tb-django { background: rgba(0, 255, 136, 0.15); color: var(--accent-green); border: 1px solid rgba(0, 255, 136, 0.3); }
-    .tb-beau { background: rgba(255, 0, 85, 0.15); color: var(--accent-pink); border: 1px solid rgba(255, 0, 85, 0.3); }
-    .tune-car-name { font-size: 13px; font-weight: 700; color: var(--text-main); }
-    .tune-detail-text { font-size: 12px; color: var(--text-muted); }
-    .sharecode-row {
-      display: flex; align-items: center; justify-content: space-between; background: #161c28; padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.05); margin-top: 4px;
+    .tune-code { font-family: monospace; font-size: 13px; font-weight: 700; letter-spacing: 1px; color: var(--accent-yellow); }
+    .copy-btn {
+      background: var(--badge-bg); border: 1px solid var(--card-border); color: var(--text-main); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 4px; cursor: pointer; transition: all 0.2s;
     }
-    .sc-val { font-family: monospace; font-size: 13px; font-weight: 700; letter-spacing: 1px; color: var(--accent-yellow); }
-    .copy-sm-btn {
-      background: var(--badge-bg); border: 1px solid var(--card-border); color: var(--text-main); font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; cursor: pointer; transition: all 0.2s;
-    }
-    .copy-sm-btn:hover { background: var(--accent-cyan); color: #000; }
-    
-    /* Tip Box */
-    .tip-box {
-      background: rgba(0, 229, 255, 0.05); border-left: 3px solid var(--accent-cyan); padding: 10px 14px; border-radius: 0 6px 6px 0; font-size: 12px; color: var(--text-muted); margin: 12px 0;
-    }
-    .tip-box strong { color: var(--text-main); }
+    .copy-btn:hover { background: var(--accent-cyan); color: #000; }
     
     /* Toast */
     #toast {
@@ -225,11 +211,11 @@
   <header>
     <div class="header-top">
       <div class="title-group">
-        <h1>Forza Horizon 6 <span class="tag">Autumn</span></h1>
-        <div class="subtitle">Theme: Horizon Meets - Autumn (Storm Season)</div>
+        <h1>Forza Horizon 6 <span class="tag">Winter</span></h1>
+        <div class="subtitle">Theme: Horizon Meets - Winter (Dry Season)</div>
       </div>
       <div class="season-dates">
-        Series 06 • Week 2 | Active: Oct 15 – Oct 22, 2026
+        Series 06 • Week 3 | Active: Oct 22 – Oct 29, 2026
       </div>
     </div>
 
@@ -244,8 +230,8 @@
       </div>
       <div class="roster-card">
         <div class="roster-info">
-          <h4><a href="https://www.reddit.com/r/forza/comments/1x6tyvs/series_06_week_2_autumn_seasonal_tunes_horizon/" target="_blank" rel="noopener">BigHeadDjango</a></h4>
-          <p>15 Tunes + PR Stunts &amp; Blueprints</p>
+          <h4><a href="https://www.reddit.com/r/ForzaHorizon/comments/1xcimbx/fh6_series_6_winter_breakdown_and_rewards/" target="_blank" rel="noopener">BigHeadDjango</a></h4>
+          <p>16 Tunes + PR Stunts &amp; Blueprints</p>
         </div>
         <span class="status-badge status-active">Active</span>
       </div>
@@ -258,7 +244,7 @@
       </div>
       <div class="roster-card">
         <div class="roster-info">
-          <h4><a href="https://www.reddit.com/r/ForzaHorizon/comments/1x6lp16/fh6_series_6_autumn_breakdown_and_rewards/" target="_blank" rel="noopener">ollumi &amp; Collaborators</a></h4>
+          <h4><a href="https://www.reddit.com/r/ForzaHorizon/comments/1xcimbx/fh6_series_6_winter_breakdown_and_rewards/" target="_blank" rel="noopener">ollumi &amp; Collaborators</a></h4>
           <p>25 Competitive Tunes + Route Strategy</p>
         </div>
         <span class="status-badge status-active">Active</span>
@@ -271,7 +257,7 @@
     </div>
     <div class="progress-stats">
       <div class="stat-line">
-        <span id="completionProgressText">Completion Progress: 0% (0/20 events completed)</span>
+        <span id="completionProgressText">Completion Progress: 0% (0/19 events completed)</span>
       </div>
       <div class="stat-line">
         <span>Season Rewards Target: <span id="collectedPoints" style="color:var(--accent-cyan); font-weight:700;">0 Pts</span> collected (<span id="rewardPointsMin">0/20 Pts Min</span> • <span id="rewardPointsMax">0/40 Pts Max</span>)</span>
@@ -294,11 +280,11 @@
   </div>
 
   <!-- 1. Progress & Rewards Overview -->
-  <div class="collapsible-card active" data-card-id="s06_w2_rewards" data-category="rewards">
+  <div class="collapsible-card active" data-card-id="s06_w3_rewards" data-category="rewards">
     <div class="card-header">
       <div class="header-left">
         <span class="arrow-indicator">▼</span>
-        <span class="card-title">🏆 Series 06 &amp; Autumn Season Progress Rewards</span>
+        <span class="card-title">🏆 Series 06 &amp; Winter Season Progress Rewards</span>
       </div>
       <div class="badge-group">
         <span class="badge badge-pts">53 PTS AVAILABLE</span>
@@ -307,7 +293,7 @@
     </div>
     <div class="collapsible-content">
       <div style="font-size: 13px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">
-        Autumn Seasonal Rewards (40 Pts Max):
+        Winter Seasonal Rewards (40 Pts Max):
       </div>
       <div class="reward-card-grid">
         <div class="reward-item-box">
@@ -315,16 +301,16 @@
             <span class="reward-threshold">20 PTS SEASON REWARD</span>
             <span class="reward-status-pill rsp-pending" id="statusPill20">Locked</span>
           </div>
-          <div class="reward-item-name">2018 DeBerti Ford Mustang GT</div>
-          <div class="reward-item-desc">Seasonal Exclusive • Class S1 880 RWD. Custom widebody drift and road race monster packing supercharged 5.0L Coyote V8 power.</div>
+          <div class="reward-item-name">2004 Saleen S7</div>
+          <div class="reward-item-desc">Seasonal Exclusive • Class S1 773 RWD. Iconic American mid-engine supercar powered by an all-aluminum 7.0L Ford V8 producing 550 hp with pure analog handling.</div>
         </div>
         <div class="reward-item-box">
           <div class="reward-label-row">
             <span class="reward-threshold">40 PTS SEASON REWARD</span>
             <span class="reward-status-pill rsp-pending" id="statusPill40">Locked</span>
           </div>
-          <div class="reward-item-name">2010 Nissan 370Z</div>
-          <div class="reward-item-desc">Seasonal Exclusive • Class B 645 RWD. Highly sought-after Japanese sports coupe featuring iconic high-revving VQ37VHR naturally aspirated V6.</div>
+          <div class="reward-item-name">1986 Audi #2 Audi Sport quattro S1</div>
+          <div class="reward-item-desc">Autoshow Reward • Class S1 726 AWD. Legendary Group B rally homologation monster sporting the unmistakable turbocharged 5-cylinder engine and extreme aerodynamic wings.</div>
         </div>
       </div>
 
@@ -349,7 +335,7 @@
       </div>
 
       <div style="font-size: 13px; font-weight: 700; color: var(--accent-cyan); margin: 16px 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">
-        Monthly Rivals (Series 06 Overall &amp; Autumn Contribution):
+        Monthly Rivals (Series 06 Overall &amp; Winter Contribution):
       </div>
       <div class="item-check-row" data-id="s06_task_monthly_rivals" data-points="1">
         <input type="checkbox" id="task_s06_monthly_rivals">
@@ -358,70 +344,88 @@
             <div class="task-title">Monthly Rivals: Daikoku Circuit (Road Racing • Circuit)</div>
             <span class="badge badge-pts">4 PTS TOTAL • 1 PT PER SEASON • ROAD CIRCUIT</span>
           </div>
-          <div class="task-desc">Post a clean lap time in the 2025 BMW M4 CS on Daikoku Circuit. Completing once awards 1 point per season toward overall playlist completion.</div>
-          <div class="reward-pill">+1 PT Autumn Season (+4 PTS Series Total) • Super Wheelspin</div>
+          <div class="task-desc">Post a clean lap time in the 2025 BMW M4 CS on Daikoku Circuit. Completing once awards 1 point per season toward overall playlist completion. Keep manual control on (Anna Autopilot flags lap as dirty).</div>
+          <div class="reward-pill">+1 PT Winter Season (+4 PTS Series Total) • Super Wheelspin</div>
         </div>
       </div>
     </div>
   </div>
 
   <!-- 2. Forzathon Weekly Challenge -->
-  <div class="collapsible-card active" data-card-id="s06_w2_weekly" data-category="challenges">
+  <div class="collapsible-card active" data-card-id="s06_w3_weekly" data-category="challenges">
     <div class="card-header">
       <div class="header-left">
         <span class="arrow-indicator">▼</span>
-        <span class="card-title">🚗 Weekly Challenge: "In Focus"</span>
+        <span class="card-title">⏱️ Forzathon Weekly Challenge: Strictly for Fun</span>
       </div>
       <div class="badge-group">
-        <span class="badge badge-pts">5 PTS • 150,000 CR</span>
-        <span class="badge badge-class">2017 FORD FOCUS RS</span>
+        <span class="badge badge-pts">5 PTS</span>
+        <span class="badge badge-champ">1991 HONDA BEAT</span>
       </div>
     </div>
     <div class="collapsible-content">
       <div class="item-check-row" data-id="s06_task_weekly" data-points="5">
         <input type="checkbox" id="task_s06_weekly">
         <div class="task-content">
-          <div class="task-title">In Focus — 4 Chapters</div>
+          <div class="task-title">Weekly Challenge: 1991 Honda Beat (Class D 358 RWD / Tuned A 800)</div>
           <div class="task-desc">
-            • <strong>Chapter 1:</strong> Own and drive the 2017 Ford Focus RS.<br>
-            • <strong>Chapter 2:</strong> Take a photo of the 2017 Ford Focus RS.<br>
-            • <strong>Chapter 3:</strong> Earn 3 Stars at Speed Traps in the 2017 Ford Focus RS (can repeat any speed trap).<br>
-            • <strong>Chapter 4:</strong> Earn a Great Skill Chain in the 2017 Ford Focus RS.
+            Complete the 4 progressive chapters:
+            <br>• Chapter 1: Own and drive the 1991 Honda Beat (Reward from Daily Exercise championship, Autoshow 15,000 CR, or Collection Journal).
+            <br>• Chapter 2: Earn 3 Stars at Danger Signs in the 1991 Honda Beat (Rollercoaster Leap recommended).
+            <br>• Chapter 3: Park at any Car Meet in the 1991 Honda Beat.
+            <br>• Chapter 4: Complete 2 laps at the Hokubu Time Attack Circuit in the 1991 Honda Beat.
           </div>
           <div class="reward-pill">+5 PTS • 150,000 CR</div>
         </div>
       </div>
 
-      <div class="tip-box">
-        <strong>Pro Tip (from BigHeadDjango &amp; ollumi):</strong> The 2017 Ford Focus RS is also the reward car from the "Fully Charged" championship. For Chapter 3, repeatedly hitting the main highway speed trap is the quickest method.
+      <div style="font-size: 13px; font-weight: 700; color: var(--accent-cyan); margin: 16px 0 10px 0; text-transform: uppercase; letter-spacing: 0.5px;">
+        Recommended Community Tunes (Ordered by Creator Priority):
       </div>
-
-      <div style="font-weight: 700; color: var(--accent-cyan); font-size: 13px; text-transform: uppercase; margin: 14px 0 6px 0;">
-        Recommended Tunes (Creator Priority Order):
-      </div>
-      <div class="tunes-subgrid">
-        <!-- BigHeadDjango (1st Priority) -->
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-django">BigHeadDjango</span>
-            <div class="tune-car-name">2017 Ford Focus RS (Wide Body Kit)</div>
-            <div class="tune-detail-text">A Road v1 Body Kit • Wide body kit • Rear lip aero • Aggressive stance</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">144 658 785</span>
-            <button class="copy-sm-btn" onclick="copyCode('144 658 785')">Copy</button>
+      <div class="tune-card-grid">
+        <!-- BigHeadDjango (1st Active Priority) -->
+        <div class="tune-card">
+          <div class="tune-car-name">1991 Honda Beat</div>
+          <div class="tune-creator">Tune by <span class="creator-name">BigHeadDjango</span> (1st Priority)</div>
+          <div class="tune-stats">Class A 800 • A Road v1 Full Aero • Grip Setup</div>
+          <div class="tune-notes">Full aero; proper road grip (not drift); custom parts &amp; rims; strong mid-speed acceleration; 7 gears.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">757 075 974</span>
+            <button class="copy-btn" onclick="copyCode('757 075 974')">Copy</button>
           </div>
         </div>
+
         <!-- ollumi & Collaborators -->
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-ollumi">ollumi</span>
-            <div class="tune-car-name">2017 Ford Focus RS (A Road Balanced)</div>
-            <div class="tune-detail-text">A Class Road Setup • Planted AWD handling and strong acceleration through speed traps</div>
+        <div class="tune-card">
+          <div class="tune-car-name">1991 Honda Beat</div>
+          <div class="tune-creator">Tune by <span class="creator-name">ollumi</span> (Collaborator)</div>
+          <div class="tune-stats">Class A 800 • A Road • Meta Handling</div>
+          <div class="tune-notes">Handling-tilted road build designed specifically for the Hokubu Time Attack and Danger Sign speed.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">117 426 706</span>
+            <button class="copy-btn" onclick="copyCode('117 426 706')">Copy</button>
           </div>
-          <div class="sharecode-row">
-            <span class="sc-val">155 823 909</span>
-            <button class="copy-sm-btn" onclick="copyCode('155 823 909')">Copy</button>
+        </div>
+
+        <div class="tune-card">
+          <div class="tune-car-name">1991 Honda Beat</div>
+          <div class="tune-creator">Tune by <span class="creator-name">ollumi</span> (Collaborator)</div>
+          <div class="tune-stats">Class A 800 • A Dirt • Meta</div>
+          <div class="tune-notes">Dirt-tuned off-road variant offering exceptional launch and stability on rough paths.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">137 870 080</span>
+            <button class="copy-btn" onclick="copyCode('137 870 080')">Copy</button>
+          </div>
+        </div>
+
+        <div class="tune-card">
+          <div class="tune-car-name">1991 Honda Beat</div>
+          <div class="tune-creator">Tune by <span class="creator-name">MarkCask4773</span> (Community Guide)</div>
+          <div class="tune-stats">Class A 800 • All-Rounder Build</div>
+          <div class="tune-notes">Easy-to-drive general progression setup for clearing all 4 weekly chapters smoothly.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">183 405 329</span>
+            <button class="copy-btn" onclick="copyCode('183 405 329')">Copy</button>
           </div>
         </div>
       </div>
@@ -429,715 +433,707 @@
   </div>
 
   <!-- 3. Forzathon Daily Challenges -->
-  <div class="collapsible-card active" data-card-id="s06_w2_dailies" data-category="challenges">
+  <div class="collapsible-card active" data-card-id="s06_w3_dailies" data-category="challenges">
     <div class="card-header">
       <div class="header-left">
         <span class="arrow-indicator">▼</span>
-        <span class="card-title">📅 Daily Challenges (7 Challenges)</span>
+        <span class="card-title">📅 Forzathon Daily Challenges</span>
       </div>
       <div class="badge-group">
         <span class="badge badge-pts">7 PTS TOTAL</span>
-        <span class="badge badge-champ">1 PT &amp; 5,000 CR EACH</span>
+        <span class="badge badge-stunt">1 PT EACH</span>
       </div>
     </div>
     <div class="collapsible-content">
-      <div class="item-check-row" data-id="s06_task_daily_thu" data-points="1">
-        <input type="checkbox" id="task_s06_daily_thu">
+      <div class="item-check-row" data-id="s06_daily_1" data-points="1">
+        <input type="checkbox" id="daily_1">
         <div class="task-content">
-          <div class="task-title">Thursday: Street Sweeper</div>
-          <div class="task-desc">Complete any Street Race in any vehicle.</div>
+          <div class="task-title">Thursday: Convenience Gathering — Park at the 7-Eleven Car Meet</div>
+          <div class="task-desc">Drive to the 7-Eleven Evolving World location in Ito and park within the designated Car Meet zone.</div>
           <div class="reward-pill">+1 PT • 5,000 CR</div>
         </div>
       </div>
-      <div class="item-check-row" data-id="s06_task_daily_fri" data-points="1">
-        <input type="checkbox" id="task_s06_daily_fri">
+
+      <div class="item-check-row" data-id="s06_daily_2" data-points="1">
+        <input type="checkbox" id="daily_2">
         <div class="task-content">
-          <div class="task-title">Friday: Airborne</div>
-          <div class="task-desc">Earn at least 1 Star from any Danger Sign in any vehicle.</div>
+          <div class="task-title">Friday: Trail Blazer — Earn at least 1 Star from any Trailblazer</div>
+          <div class="task-desc">Trigger and complete any Trailblazer stunt across the map with at least 1 star remaining on the clock.</div>
           <div class="reward-pill">+1 PT • 5,000 CR</div>
         </div>
       </div>
-      <div class="item-check-row" data-id="s06_task_daily_sat" data-points="1">
-        <input type="checkbox" id="task_s06_daily_sat">
+
+      <div class="item-check-row" data-id="s06_daily_3" data-points="1">
+        <input type="checkbox" id="daily_3">
         <div class="task-content">
-          <div class="task-title">Saturday: Cross Country Cruiser</div>
-          <div class="task-desc">Complete any Cross Country Race in any vehicle.</div>
+          <div class="task-title">Saturday: Mud Slinger — Complete a Dirt Race</div>
+          <div class="task-desc">Finish any Dirt Racing event (Trail or Scramble) in solo, co-op, or PVP mode.</div>
           <div class="reward-pill">+1 PT • 5,000 CR</div>
         </div>
       </div>
-      <div class="item-check-row" data-id="s06_task_daily_sun" data-points="1">
-        <input type="checkbox" id="task_s06_daily_sun">
+
+      <div class="item-check-row" data-id="s06_daily_4" data-points="1">
+        <input type="checkbox" id="daily_4">
         <div class="task-content">
-          <div class="task-title">Sunday: Feed Me</div>
-          <div class="task-desc">Earn 3 Feed Me Skills by smashing Vending Machines (a large cluster is at the 7-Eleven Konbini or northeast entrance of Horizon Stadium).</div>
+          <div class="task-title">Sunday: Sky High — Earn 5 Air Skills</div>
+          <div class="task-desc">Get all four wheels off the ground by hitting jumps, dunes, or ridges 5 times.</div>
           <div class="reward-pill">+1 PT • 5,000 CR</div>
         </div>
       </div>
-      <div class="item-check-row" data-id="s06_task_daily_mon" data-points="1">
-        <input type="checkbox" id="task_s06_daily_mon">
+
+      <div class="item-check-row" data-id="s06_daily_5" data-points="1">
+        <input type="checkbox" id="daily_5">
         <div class="task-content">
-          <div class="task-title">Monday: In a Rush</div>
-          <div class="task-desc">Complete any Horizon Rush Event (Pier Pressure, Launch Control, or Off Piste).</div>
+          <div class="task-title">Monday: Velocity Check — Earn 5 Speed Skills</div>
+          <div class="task-desc">Drive at high speed (100+ mph / 160+ km/h) for a sustained duration to trigger 5 Speed skills.</div>
           <div class="reward-pill">+1 PT • 5,000 CR</div>
         </div>
       </div>
-      <div class="item-check-row" data-id="s06_task_daily_tue" data-points="1">
-        <input type="checkbox" id="task_s06_daily_tue">
+
+      <div class="item-check-row" data-id="s06_daily_6" data-points="1">
+        <input type="checkbox" id="daily_6">
         <div class="task-content">
-          <div class="task-title">Tuesday: Just a Tap</div>
-          <div class="task-desc">Earn a Drift Tap Skill by gently tapping the front or rear corner of the car against a wall while drifting without crashing.</div>
+          <div class="task-title">Tuesday: Shutterbug — Take a Photo of Any Car</div>
+          <div class="task-desc">Open Photo Mode (Up on D-Pad) and take a snapshot of any vehicle in free roam or during an event.</div>
           <div class="reward-pill">+1 PT • 5,000 CR</div>
         </div>
       </div>
-      <div class="item-check-row" data-id="s06_task_daily_wed" data-points="1">
-        <input type="checkbox" id="task_s06_daily_wed">
+
+      <div class="item-check-row" data-id="s06_daily_7" data-points="1">
+        <input type="checkbox" id="daily_7">
         <div class="task-content">
-          <div class="task-title">Wednesday: Speed Demon</div>
-          <div class="task-desc">Earn at least 1 Star from any Speed Zone in any vehicle.</div>
+          <div class="task-title">Wednesday: Tuned Up — Spend 20,000 Credits on Upgrades</div>
+          <div class="task-desc">Install performance parts or custom tuning upgrades costing at least 20,000 CR at the Festival Outpost or Player House.</div>
           <div class="reward-pill">+1 PT • 5,000 CR</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 4. Photo Challenge, Treasure Hunt & Collectibles -->
-  <div class="collapsible-card active" data-card-id="s06_w2_photo_treasure" data-category="challenges">
+  <!-- 4. Photo Challenge & Treasure Hunt -->
+  <div class="collapsible-card active" data-card-id="s06_w3_photo_treasure" data-category="challenges">
     <div class="card-header">
       <div class="header-left">
         <span class="arrow-indicator">▼</span>
-        <span class="card-title">📸 Photo Challenge, 🗺️ Treasure Hunt &amp; 🥪 Collectibles</span>
+        <span class="card-title">📸 Photo Challenge &amp; Seasonal Treasure Hunt</span>
       </div>
       <div class="badge-group">
-        <span class="badge badge-pts">8 PTS TOTAL</span>
-        <span class="badge badge-champ">AUTUMN SPECIALS</span>
+        <span class="badge badge-pts">5 PTS TOTAL</span>
+        <span class="badge badge-champ">EXPLORATION</span>
       </div>
     </div>
     <div class="collapsible-content">
       <div class="item-check-row" data-id="s06_task_photo" data-points="2">
-        <input type="checkbox" id="task_s06_photo">
+        <input type="checkbox" id="task_photo">
         <div class="task-content">
-          <div class="task-title">Photo Challenge: #SliceOfLife</div>
-          <div class="task-desc">Take a photo of any Mazda at Jodogahama Beach (located in the Nangan Region east of the Space Center / Arakawa Quarter Mile; position near the rocky northeastern point).</div>
-          <div class="reward-pill">+2 PTS • Relax (emote)</div>
-        </div>
-      </div>
-      <div class="item-check-row" data-id="s06_task_treasure" data-points="3">
-        <input type="checkbox" id="task_s06_treasure">
-        <div class="task-content">
-          <div class="task-title">Treasure Hunt: Follow the Photo Clue to Discover the Treasure! (Takashiro Region)</div>
-          <div class="task-desc">Locate and smash the hidden chest in the Takashiro Region beside a small mountain lake next to picnic benches and tables in the eastern hills.</div>
-          <div class="reward-pill">+3 PTS • 100,000 CR</div>
-        </div>
-      </div>
-      <div class="item-check-row" data-id="s06_task_collectibles" data-points="3">
-        <input type="checkbox" id="task_s06_collectibles">
-        <div class="task-content">
-          <div class="task-title">Collectibles: "Egging You On"</div>
-          <div class="task-desc">Smash 20 Egg Sandwiches scattered around the 7-Eleven Evolving World location in the Ito Region.</div>
-          <div class="reward-pill">+3 PTS • “Nothin but net!” (Forza Link)</div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px;">
+            <div class="task-title">Photo Challenge: #PolarisPoint</div>
+            <span class="badge badge-pts">2 PTS • ALL-WHITE TECHWEAR BOOTS</span>
+          </div>
+          <div class="task-desc">
+            Photograph any <strong>Polaris</strong> vehicle at the <strong>Irokawa Space Center</strong>.
+            <br>• Location: Southwestern map territory (Irokawa), near the Launch Control launchpad and Arakawa Quarter Mile.
+            <br>• Eligible vehicles: Any Polaris buggy/UTV (e.g. 2021 Polaris RZR Pro XP Factory Racing Limited Edition).
+          </div>
+          <div class="reward-pill">+2 PTS • All-White Techwear Boots (clothing)</div>
         </div>
       </div>
 
-      <div class="tip-box">
-        <strong>Pro Tip:</strong> For the Photo Challenge, any stock Mazda from your garage or the Autoshow will qualify. For Collectibles, if you find yourself stuck at 19/20 egg sandwiches due to multiplayer instancing, simply fast travel away and return or restart the game to respawn the collectibles cluster.
+      <div class="item-check-row" data-id="s06_task_treasure" data-points="3">
+        <input type="checkbox" id="task_treasure">
+        <div class="task-content">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px;">
+            <div class="task-title">Treasure Hunt: Follow the Photo Clue to Discover the Treasure! (Sotoyama Region)</div>
+            <span class="badge badge-pts">3 PTS • 100,000 CR</span>
+          </div>
+          <div class="task-desc">
+            Locate and smash the hidden treasure chest in the <strong>Sotoyama Region</strong>.
+            <br>• Location: In east Sotoyama, situated on the snowy shoreline of the large frozen mountain lake north of Soni Circuit and north of the Hakusan Mountain Lodge player house.
+          </div>
+          <div class="reward-pill">+3 PTS • 100,000 CR</div>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- 5. Seasonal Championships -->
-  <!-- Championship 1 -->
-  <div class="collapsible-card active" data-card-id="s06_w2_champ1" data-category="racing">
+  <div class="collapsible-card active" data-card-id="s06_w3_championships" data-category="racing">
     <div class="card-header">
       <div class="header-left">
         <span class="arrow-indicator">▼</span>
-        <span class="card-title">🏁 Championship 1: "Coming In Hot"</span>
+        <span class="card-title">🏁 Seasonal Championships</span>
       </div>
       <div class="badge-group">
-        <span class="badge badge-pts">5 PTS • Retro Hot Hatch C 500 • Dirt Racing</span>
-        <span class="badge badge-champ">DIRT RACING</span>
+        <span class="badge badge-pts">15 PTS TOTAL</span>
+        <span class="badge badge-champ">3 CHAMPIONSHIPS</span>
       </div>
     </div>
     <div class="collapsible-content">
-      <ul class="meta-list">
-        <li class="meta-item"><span class="meta-label">Race Type:</span><span>Dirt Racing (Point-to-Point Trails &amp; Scramble Circuit)</span></li>
-        <li class="meta-item"><span class="meta-label">Car Restrictions:</span><span>Retro Hot Hatch (Class C 500)</span></li>
-        <li class="meta-item"><span class="meta-label">Tracks / Routes:</span><span>Oyashirazu Trail (Trail), Ito Trail (Trail), Ine Scramble (Scramble Circuit)</span></li>
-      </ul>
+
+      <!-- Championship 1 -->
       <div class="item-check-row" data-id="s06_task_champ1" data-points="5">
-        <input type="checkbox" id="task_s06_champ1">
+        <input type="checkbox" id="task_champ1">
         <div class="task-content">
-          <div class="task-title">Dirt Racing: Oyashirazu Trail (Trail), Ito Trail (Trail), Ine Scramble (Scramble)</div>
-          <div class="task-desc">Defeat Highly Skilled Drivatars across 3 technical dirt and gravel courses.</div>
-          <div class="reward-pill">+5 PTS • 1971 Plymouth Cuda 426 HEMI</div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px;">
+            <div class="task-title">Championship 1: Touring the Sights</div>
+            <span class="badge badge-champ">5 PTS • SUPER GT S1 800 • ROAD RACING (SPRINTS &amp; CIRCUIT)</span>
+          </div>
+          <div class="task-desc">
+            Win the 3-race series against Highly Skilled Drivatars:
+            <br>• Race 1: Coastline Sprint (Road Racing • Point-to-Point Sprint, Morning | Cloudy)
+            <br>• Race 2: Irokawa Circuit (Road Racing • Closed Circuit, Early Afternoon | Clear)
+            <br>• Race 3: Shimanoyama Sprint (Road Racing • Point-to-Point Sprint, Late Afternoon | Cloudy)
+          </div>
+          <div class="reward-pill">+5 PTS • 2021 Polaris RZR Pro XP Factory Racing Limited Edition</div>
         </div>
       </div>
-      <div class="tip-box">
-        <strong>Pro Tip (from BigHeadDjango &amp; ollumi):</strong> BigHeadDjango's 1997 Civic Type R and Corrado VR6 are fast and smooth with reduced braking lockup. Ollumi's 1986 Civic Si remains the Meta+ standard in C Dirt.
-      </div>
-      <div style="font-weight: 700; color: var(--accent-cyan); font-size: 13px; text-transform: uppercase; margin: 14px 0 6px 0;">
-        Recommended Tunes (Creator Priority Order):
-      </div>
-      <div class="tunes-subgrid">
-        <!-- BigHeadDjango (1st Priority) -->
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-django">BigHeadDjango</span>
-            <div class="tune-car-name">1997 Honda Civic Type R</div>
-            <div class="tune-detail-text">C Road Dirt v1 No Aero Stock Look • Fast • 7 gears • Stock engine</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">128 067 969</span>
-            <button class="copy-sm-btn" onclick="copyCode('128 067 969')">Copy</button>
-          </div>
-        </div>
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-django">BigHeadDjango</span>
-            <div class="tune-car-name">1995 Volkswagen Corrado VR6</div>
-            <div class="tune-detail-text">C Road Dirt v2 No Aero Stock Look • Faster, smoother, reduced braking lockup • 9 gears</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">456 477 034</span>
-            <button class="copy-sm-btn" onclick="copyCode('456 477 034')">Copy</button>
-          </div>
-        </div>
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-django">BigHeadDjango</span>
-            <div class="tune-car-name">1994 Honda Prelude SI</div>
-            <div class="tune-detail-text">C Road Dirt v1 No Aero Stock Look • 7 gears • Balanced handling</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">108 274 296</span>
-            <button class="copy-sm-btn" onclick="copyCode('108 274 296')">Copy</button>
-          </div>
-        </div>
-        <!-- ollumi & Collaborators -->
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-ollumi">ollumi</span>
-            <div class="tune-car-name">1986 Honda Civic Si</div>
-            <div class="tune-detail-text">Meta+ Tier • Absolute class leader in C Dirt, explosive traction and light turn-in</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">178 510 348</span>
-            <button class="copy-sm-btn" onclick="copyCode('178 510 348')">Copy</button>
-          </div>
-        </div>
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-ollumi">ollumi</span>
-            <div class="tune-car-name">1993 Renault Clio Williams</div>
-            <div class="tune-detail-text">Near Meta • Agile French rally hatch, exceptional stability across Ine Scramble</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">712 108 844</span>
-            <button class="copy-sm-btn" onclick="copyCode('712 108 844')">Copy</button>
-          </div>
-        </div>
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-ollumi">ollumi</span>
-            <div class="tune-car-name">1997 Honda Civic Type R</div>
-            <div class="tune-detail-text">Near Meta • VTEC punch with planted dirt suspension manners</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">129 010 774</span>
-            <button class="copy-sm-btn" onclick="copyCode('129 010 774')">Copy</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Championship 2 -->
-  <div class="collapsible-card active" data-card-id="s06_w2_champ2" data-category="racing">
-    <div class="card-header">
-      <div class="header-left">
-        <span class="arrow-indicator">▼</span>
-        <span class="card-title">🏁 Championship 2: "Weekend Break"</span>
+      <div style="font-size: 13px; font-weight: 700; color: var(--accent-cyan); margin: 12px 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">
+        Championship 1 Tunes (Super GT S1 800 • Creator Priority Order):
       </div>
-      <div class="badge-group">
-        <span class="badge badge-pts">5 PTS • USA B 600 • Road Racing</span>
-        <span class="badge badge-champ">ROAD RACING</span>
-      </div>
-    </div>
-    <div class="collapsible-content">
-      <ul class="meta-list">
-        <li class="meta-item"><span class="meta-label">Race Type:</span><span>Road Racing (Point-to-Point Sprints)</span></li>
-        <li class="meta-item"><span class="meta-label">Car Restrictions:</span><span>Country: United States (Class B 600)</span></li>
-        <li class="meta-item"><span class="meta-label">Tracks / Routes:</span><span>Ito Sprint (Sprint), Festival Sprint (Sprint), Tateyama Kurobe Sprint (Sprint)</span></li>
-      </ul>
-      <div class="item-check-row" data-id="s06_task_champ2" data-points="5">
-        <input type="checkbox" id="task_s06_champ2">
-        <div class="task-content">
-          <div class="task-title">Road Racing: Ito Sprint (Sprint), Festival Sprint (Sprint), Tateyama Kurobe Sprint (Sprint)</div>
-          <div class="task-desc">Defeat Highly Skilled Drivatars across 3 high-speed American road sprints.</div>
-          <div class="reward-pill">+5 PTS • 2008 BMW Z4 M Coupé</div>
-        </div>
-      </div>
-      <div class="tip-box">
-        <strong>Pro Tip (from BigHeadDjango &amp; ollumi):</strong> BigHeadDjango's DeLorean DMC-12 is a standout surprise with strong acceleration and high B-class top speed. Ollumi's Integra Type R is the established Meta king, and MSR Sam's Charger Daytona HEMI is an expert powerbuild missile.
-      </div>
-      <div style="font-weight: 700; color: var(--accent-cyan); font-size: 13px; text-transform: uppercase; margin: 14px 0 6px 0;">
-        Recommended Tunes (Creator Priority Order):
-      </div>
-      <div class="tunes-subgrid">
+      <div class="tune-card-grid">
         <!-- BigHeadDjango (1st Priority) -->
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-django">BigHeadDjango</span>
-            <div class="tune-car-name">1982 DeLorean DMC-12</div>
-            <div class="tune-detail-text">B Road v2 No Aero Stock Look • Strong accel • Good braking • High B class top speed • 7 gears</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">115 605 721</span>
-            <button class="copy-sm-btn" onclick="copyCode('115 605 721')">Copy</button>
-          </div>
-        </div>
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-django">BigHeadDjango</span>
-            <div class="tune-car-name">2000 Ford SVT Cobra R</div>
-            <div class="tune-detail-text">B Road v1 No Aero Stock Look • Good handling • High B class top speed • Stock engine</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">830 419 871</span>
-            <button class="copy-sm-btn" onclick="copyCode('830 419 871')">Copy</button>
+        <div class="tune-card">
+          <div class="tune-car-name">2017 Ferrari 812 Superfast</div>
+          <div class="tune-creator">Tune by <span class="creator-name">BigHeadDjango</span> (1st Priority)</div>
+          <div class="tune-stats">Class S1 800 • S1 Road v1 No Aero Stock Look</div>
+          <div class="tune-notes">Good acceleration; very high S1 top speed; 7 gears; built specifically for high-speed road sweeps.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">855 747 244</span>
+            <button class="copy-btn" onclick="copyCode('855 747 244')">Copy</button>
           </div>
         </div>
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-django">BigHeadDjango</span>
-            <div class="tune-car-name">1969 Ford Mustang Boss 302</div>
-            <div class="tune-detail-text">B Road v1 No Aero Stock Look • Pure muscle power • Stock engine</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">491 888 941</span>
-            <button class="copy-sm-btn" onclick="copyCode('491 888 941')">Copy</button>
-          </div>
-        </div>
-        <!-- ollumi & Collaborators -->
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-ollumi">ollumi</span>
-            <div class="tune-car-name">2001 Acura Integra Type R</div>
-            <div class="tune-detail-text">Meta Tier • Proven class benchmark with immense grip and rapid acceleration</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">152 202 501</span>
-            <button class="copy-sm-btn" onclick="copyCode('152 202 501')">Copy</button>
-          </div>
-        </div>
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-ollumi">Falken JP</span>
-            <div class="tune-car-name">1969 Dodge Charger R/T</div>
-            <div class="tune-detail-text">Near Meta Sprints • Heavyweight classic V8 with strong top-end momentum</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">655 856 092</span>
-            <button class="copy-sm-btn" onclick="copyCode('655 856 092')">Copy</button>
-          </div>
-        </div>
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-ollumi">MSR Sam</span>
-            <div class="tune-car-name">1969 Dodge Charger Daytona HEMI</div>
-            <div class="tune-detail-text">Meta Sprints • RWD Power Build with immense straight-line speed on highway sprints</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">177 061 583</span>
-            <button class="copy-sm-btn" onclick="copyCode('177 061 583')">Copy</button>
-          </div>
-        </div>
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-ollumi">GreetedDust8</span>
-            <div class="tune-car-name">1969 Dodge Charger Daytona HEMI</div>
-            <div class="tune-detail-text">Very Strong Tier • Balanced wing car with stable high-speed stability</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">998 962 131</span>
-            <button class="copy-sm-btn" onclick="copyCode('998 962 131')">Copy</button>
-          </div>
-        </div>
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-ollumi">Noa Miyako</span>
-            <div class="tune-car-name">2020 Ford Super Duty F-450 DRW Platinum</div>
-            <div class="tune-detail-text">Strong Setup • Heavyweight dually truck that shrugs off AI collisions</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">604 723 997</span>
-            <button class="copy-sm-btn" onclick="copyCode('604 723 997')">Copy</button>
-          </div>
-        </div>
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-ollumi">TheDannny</span>
-            <div class="tune-car-name">2013 Cadillac XTS Limousine</div>
-            <div class="tune-detail-text">FWD Build • Hilarious yet shockingly competitive long-wheelbase cruiser</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">168 422 916</span>
-            <button class="copy-sm-btn" onclick="copyCode('168 422 916')">Copy</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Championship 3 -->
-  <div class="collapsible-card active" data-card-id="s06_w2_champ3" data-category="racing">
-    <div class="card-header">
-      <div class="header-left">
-        <span class="arrow-indicator">▼</span>
-        <span class="card-title">🏁 Championship 3: "Fully Charged"</span>
-      </div>
-      <div class="badge-group">
-        <span class="badge badge-pts">5 PTS • Electric Vehicles A 700 • Street Racing</span>
-        <span class="badge badge-champ">STREET RACING</span>
-      </div>
-    </div>
-    <div class="collapsible-content">
-      <ul class="meta-list">
-        <li class="meta-item"><span class="meta-label">Race Type:</span><span>Street Racing (Night Sprints &amp; Hillclimbs)</span></li>
-        <li class="meta-item"><span class="meta-label">Car Restrictions:</span><span>Electric Vehicles (Class A 700) — Horizon Special category</span></li>
-        <li class="meta-item"><span class="meta-label">Tracks / Routes:</span><span>Sunflower Charge (Sprint), Matsumi Climb (Hillclimb Sprint), Shimanoyama Charge (Sprint)</span></li>
-      </ul>
-      <div class="item-check-row" data-id="s06_task_champ3" data-points="5">
-        <input type="checkbox" id="task_s06_champ3">
-        <div class="task-content">
-          <div class="task-title">Street Racing: Sunflower Charge (Sprint), Matsumi Climb (Hillclimb), Shimanoyama Charge (Sprint)</div>
-          <div class="task-desc">Defeat Highly Skilled Drivatars across 3 fast electric street sprint courses.</div>
-          <div class="reward-pill">+5 PTS • 2017 Ford Focus RS</div>
-        </div>
-      </div>
-      <div class="tip-box">
-        <strong>Pro Tip (from BigHeadDjango &amp; ollumi):</strong> BigHeadDjango's Hyundai N Vision 74 (Stock Aero Stock Look) and Audi RS E-Tron GT purist build offer great acceleration. Ollumi's Wuling Mini EV RWD powerbuild is blisteringly fast on flat sprints.
-      </div>
-      <div style="font-weight: 700; color: var(--accent-cyan); font-size: 13px; text-transform: uppercase; margin: 14px 0 6px 0;">
-        Recommended Tunes (Creator Priority Order):
-      </div>
-      <div class="tunes-subgrid">
-        <!-- BigHeadDjango (1st Priority) -->
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-django">BigHeadDjango</span>
-            <div class="tune-car-name">2022 Hyundai N Vision 74</div>
-            <div class="tune-detail-text">A Road v1 Stock Aero Stock Look • Fast • Good accel • Good handling • Stock motor</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">150 234 367</span>
-            <button class="copy-sm-btn" onclick="copyCode('150 234 367')">Copy</button>
+        <div class="tune-card">
+          <div class="tune-car-name">2025 GR GR GT (Prototype)</div>
+          <div class="tune-creator">Tune by <span class="creator-name">BigHeadDjango</span> (1st Priority)</div>
+          <div class="tune-stats">Class S1 800 • S1 Road v1 No Aero Stock Look</div>
+          <div class="tune-notes">Superb braking stability; balanced grip through technical curves; 7 gears.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">136 265 802</span>
+            <button class="copy-btn" onclick="copyCode('136 265 802')">Copy</button>
           </div>
         </div>
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-django">BigHeadDjango</span>
-            <div class="tune-car-name">2021 Audi RS E-Tron GT</div>
-            <div class="tune-detail-text">A Road v1 Purist No Aero • Strong accel • Max power-to-weight • Custom rims • Stock motor</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">507 609 634</span>
-            <button class="copy-sm-btn" onclick="copyCode('507 609 634')">Copy</button>
-          </div>
-        </div>
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-django">BigHeadDjango</span>
-            <div class="tune-car-name">2023 Hyundai IONIQ 5 N</div>
-            <div class="tune-detail-text">A Road v1 True Purist No Aero Stock Look • Max power-to-weight • Stock motor</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">101 158 507</span>
-            <button class="copy-sm-btn" onclick="copyCode('101 158 507')">Copy</button>
+
+        <div class="tune-card">
+          <div class="tune-car-name">2015 Mercedes-AMG GT S</div>
+          <div class="tune-creator">Tune by <span class="creator-name">BigHeadDjango</span> (1st Priority)</div>
+          <div class="tune-stats">Class S1 800 • S1 Road v1 No Aero Stock Look</div>
+          <div class="tune-notes">Good straight-line braking; powerful V8 surge; 7 gears.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">509 409 387</span>
+            <button class="copy-btn" onclick="copyCode('509 409 387')">Copy</button>
           </div>
         </div>
+
         <!-- ollumi & Collaborators -->
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-ollumi">ollumi</span>
-            <div class="tune-car-name">2022 Wuling Mini EV (RWD Power Build)</div>
-            <div class="tune-detail-text">Very Strong Sprints • Rocket-like acceleration that blitzes Sunflower and Shimanoyama sprints</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">121 444 700</span>
-            <button class="copy-sm-btn" onclick="copyCode('121 444 700')">Copy</button>
-          </div>
-        </div>
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-ollumi">K1Z Bard</span>
-            <div class="tune-car-name">2022 Honda e</div>
-            <div class="tune-detail-text">RWD Powerbuild • Nimble EV package with strong corner-exit torque</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">923 715 142</span>
-            <button class="copy-sm-btn" onclick="copyCode('923 715 142')">Copy</button>
+        <div class="tune-card">
+          <div class="tune-car-name">2025 GR GR GT (Prototype)</div>
+          <div class="tune-creator">Tune by <span class="creator-name">ollumi</span> (Collaborator)</div>
+          <div class="tune-stats">Class S1 800 • Semi-Slicks Road • Strong Tier</div>
+          <div class="tune-notes">Semi-slick tire compound holding up best on technical touge sections of Irokawa and Shimanoyama.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">121 991 600</span>
+            <button class="copy-btn" onclick="copyCode('121 991 600')">Copy</button>
           </div>
         </div>
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-ollumi">ollumi</span>
-            <div class="tune-car-name">2022 Hyundai N Vision 74</div>
-            <div class="tune-detail-text">Offroad Tires Setup • Most forgiving, reliable handling through Matsumi Climb</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">129 764 262</span>
-            <button class="copy-sm-btn" onclick="copyCode('129 764 262')">Copy</button>
+
+        <div class="tune-card">
+          <div class="tune-car-name">2009 Mercedes-Benz SL 65 AMG Black Series</div>
+          <div class="tune-creator">Tune by <span class="creator-name">ollumi</span> (Collaborator)</div>
+          <div class="tune-stats">Class S1 800 • Road Grip Setup</div>
+          <div class="tune-notes">Twin-turbo V12 powerhouse delivering massive mid-range torque on long straightaways.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">109 615 804</span>
+            <button class="copy-btn" onclick="copyCode('109 615 804')">Copy</button>
           </div>
         </div>
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-ollumi">Rainwall TV</span>
-            <div class="tune-car-name">2022 Hyundai N Vision 74 (Purist Build)</div>
-            <div class="tune-detail-text">Purist Build • Preserves factory hydrogen-electric hybrid balance and feel</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">930 022 190</span>
-            <button class="copy-sm-btn" onclick="copyCode('930 022 190')">Copy</button>
+
+        <div class="tune-card">
+          <div class="tune-car-name">2025 GR GR GT (Prototype)</div>
+          <div class="tune-creator">Tune by <span class="creator-name">LetzeLU</span> (ollumi Collaborator)</div>
+          <div class="tune-stats">Class S1 800 • Purist RWD Setup</div>
+          <div class="tune-notes">Rear-wheel drive purist build engineered for responsive rotation through tight hairpins.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">158 850 474</span>
+            <button class="copy-btn" onclick="copyCode('158 850 474')">Copy</button>
           </div>
         </div>
       </div>
+
+      <!-- Championship 2 -->
+      <div class="item-check-row" data-id="s06_task_champ2" data-points="5" style="margin-top: 24px;">
+        <input type="checkbox" id="task_champ2">
+        <div class="task-content">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px;">
+            <div class="task-title">Championship 2: Daily Exercise</div>
+            <span class="badge badge-champ">5 PTS • HIGH PERFORMANCE DAILIES A 700 • STREET RACING (TOUGE SPRINTS)</span>
+          </div>
+          <div class="task-desc">
+            Win the 3-race series against Highly Skilled Drivatars:
+            <br>• Race 1: Nachi Run (Street Racing • Touge Sprint, Night | Clear)
+            <br>• Race 2: Cedar Run (Street Racing • Point-to-Point Sprint, Night | Light Precipitation)
+            <br>• Race 3: Okishinaimura Run (Street Racing • Technical Sprint, Night | Cloudy Post-Rain)
+          </div>
+          <div class="reward-pill">+5 PTS • 1991 Honda Beat (Needed for Weekly Challenge)</div>
+        </div>
+      </div>
+
+      <div style="font-size: 13px; font-weight: 700; color: var(--accent-cyan); margin: 12px 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">
+        Championship 2 Tunes (High Performance Dailies A 700 • Creator Priority Order):
+      </div>
+      <div class="tune-card-grid">
+        <!-- BigHeadDjango (1st Priority) -->
+        <div class="tune-card">
+          <div class="tune-car-name">2014 HSV Gen-F GTS</div>
+          <div class="tune-creator">Tune by <span class="creator-name">BigHeadDjango</span> (1st Priority)</div>
+          <div class="tune-stats">Class A 700 • A Road v2 Stock Aero Stock Look</div>
+          <div class="tune-notes">Supercharged Aussie V8 monster; extremely fast with fierce acceleration down Cedar Run.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">250 331 392</span>
+            <button class="copy-btn" onclick="copyCode('250 331 392')">Copy</button>
+          </div>
+        </div>
+
+        <div class="tune-card">
+          <div class="tune-car-name">2012 Mercedes-Benz C 63 AMG Black Series</div>
+          <div class="tune-creator">Tune by <span class="creator-name">BigHeadDjango</span> (1st Priority)</div>
+          <div class="tune-stats">Class A 700 • A Road v1 Stock Aero Stock Look</div>
+          <div class="tune-notes">6.2L naturally aspirated V8; great high-speed stability; 7 gears.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">111 937 482</span>
+            <button class="copy-btn" onclick="copyCode('111 937 482')">Copy</button>
+          </div>
+        </div>
+
+        <div class="tune-card">
+          <div class="tune-car-name">2014 BMW M4 Coupe</div>
+          <div class="tune-creator">Tune by <span class="creator-name">BigHeadDjango</span> (1st Priority)</div>
+          <div class="tune-stats">Class A 700 • A Road v1 No Aero Stock Look</div>
+          <div class="tune-notes">Very easy to handle and predictable in wet conditions; 7 gears.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">197 337 537</span>
+            <button class="copy-btn" onclick="copyCode('197 337 537')">Copy</button>
+          </div>
+        </div>
+
+        <!-- ollumi & Collaborators -->
+        <div class="tune-card">
+          <div class="tune-car-name">2015 Lexus RC F</div>
+          <div class="tune-creator">Tune by <span class="creator-name">ollumi</span> (Collaborator)</div>
+          <div class="tune-stats">Class A 700 • Engine Swap Build • Very Strong</div>
+          <div class="tune-notes">Benefited immensely from latest engine swap updates; handles technical Okishinaimura turns with ease.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">103 785 865</span>
+            <button class="copy-btn" onclick="copyCode('103 785 865')">Copy</button>
+          </div>
+        </div>
+
+        <div class="tune-card">
+          <div class="tune-car-name">2016 Cadillac ATS-V</div>
+          <div class="tune-creator">Tune by <span class="creator-name">Rotgoblins</span> (ollumi Collaborator)</div>
+          <div class="tune-stats">Class A 700 • Twin-Turbo V6 • Very Strong</div>
+          <div class="tune-notes">Razor-sharp chassis responsiveness and high corner exit speed.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">538 722 449</span>
+            <button class="copy-btn" onclick="copyCode('538 722 449')">Copy</button>
+          </div>
+        </div>
+
+        <div class="tune-card">
+          <div class="tune-car-name">2021 Volkswagen Golf R</div>
+          <div class="tune-creator">Tune by <span class="creator-name">ollumi</span> (Collaborator)</div>
+          <div class="tune-stats">Class A 700 • AWD Hot Hatch • Strong</div>
+          <div class="tune-notes">All-wheel drive grip makes night wet-weather racing on Cedar Run effortless.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">131 209 982</span>
+            <button class="copy-btn" onclick="copyCode('131 209 982')">Copy</button>
+          </div>
+        </div>
+
+        <div class="tune-card">
+          <div class="tune-car-name">2022 Ford Focus ST</div>
+          <div class="tune-creator">Tune by <span class="creator-name">K1Z Bard</span> (ollumi Collaborator)</div>
+          <div class="tune-stats">Class A 700 • FWD Touge • Strong</div>
+          <div class="tune-notes">Fast front-wheel-drive pace; turn Traction Control (TCR) on at launch if struggling with wheelspin.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">119 754 042</span>
+            <button class="copy-btn" onclick="copyCode('119 754 042')">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Championship 3 -->
+      <div class="item-check-row" data-id="s06_task_champ3" data-points="5" style="margin-top: 24px;">
+        <input type="checkbox" id="task_champ3">
+        <div class="task-content">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px;">
+            <div class="task-title">Championship 3: Hitting Your A Game</div>
+            <span class="badge badge-champ">5 PTS • HEAVY HITTERS (2100+ KG) A 700 • CROSS COUNTRY (CIRCUITS &amp; SPRINTS)</span>
+          </div>
+          <div class="task-desc">
+            Win the 3-race series against Highly Skilled Drivatars:
+            <br>• Race 1: Izu Cross Country (Cross Country • Point-to-Point, Late Afternoon | Overcast)
+            <br>• Race 2: Stadium Cross Country Circuit (Cross Country • Closed Circuit, Late Afternoon | Light Precipitation)
+            <br>• Race 3: Yahikoyama Cross Country (Cross Country • Point-to-Point, Sunset | Cloudy Post-Rain)
+            <br><em>Vehicle Rule: Vehicle must weigh 2,100+ kg (4,630+ lbs). Toggle car stats in garage with Right Stick.</em>
+          </div>
+          <div class="reward-pill">+5 PTS • 1987 Nissan Skyline GTS-R</div>
+        </div>
+      </div>
+
+      <div style="font-size: 13px; font-weight: 700; color: var(--accent-cyan); margin: 12px 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">
+        Championship 3 Tunes (Heavy Hitters A 700 • Creator Priority Order):
+      </div>
+      <div class="tune-card-grid">
+        <!-- BigHeadDjango (1st Priority) -->
+        <div class="tune-card">
+          <div class="tune-car-name">2018 Porsche Cayenne Turbo</div>
+          <div class="tune-creator">Tune by <span class="creator-name">BigHeadDjango</span> (1st Priority)</div>
+          <div class="tune-stats">Class A 700 • A CC v1 Heavy Hitters No Aero Stock Look</div>
+          <div class="tune-notes">Superb acceleration &amp; handling; high-profile rear tires absorb rough landings; 7 gears; destroys Unbeatable AI.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">200 366 736</span>
+            <button class="copy-btn" onclick="copyCode('200 366 736')">Copy</button>
+          </div>
+        </div>
+
+        <div class="tune-card">
+          <div class="tune-car-name">2011 BMW X5 M</div>
+          <div class="tune-creator">Tune by <span class="creator-name">BigHeadDjango</span> (1st Priority)</div>
+          <div class="tune-stats">Class A 700 • A CC v1 Heavy Hitters No Aero Stock Look</div>
+          <div class="tune-notes">Fierce twin-turbo launch; high-profile off-road rear tires; smooth suspension travel; 7 gears.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">127 550 362</span>
+            <button class="copy-btn" onclick="copyCode('127 550 362')">Copy</button>
+          </div>
+        </div>
+
+        <!-- ollumi & Collaborators -->
+        <div class="tune-card">
+          <div class="tune-car-name">2021 Rivian R1T</div>
+          <div class="tune-creator">Tune by <span class="creator-name">Noa Seako</span> (ollumi Collaborator)</div>
+          <div class="tune-stats">Class A 700 • EV Heavy Hitter • Sprint Meta</div>
+          <div class="tune-notes">Quad-motor electric torque; blisteringly fast launch; sprint race meta tier.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">265 313 393</span>
+            <button class="copy-btn" onclick="copyCode('265 313 393')">Copy</button>
+          </div>
+        </div>
+
+        <div class="tune-card">
+          <div class="tune-car-name">2015 Honda Ridgeline Baja Trophy Truck</div>
+          <div class="tune-creator">Tune by <span class="creator-name">ollumi</span> (Collaborator)</div>
+          <div class="tune-stats">Class A 700 • Baja Trophy Truck • Very Strong</div>
+          <div class="tune-notes">Huge suspension articulation soaking up big jumps at Stadium Cross Country Circuit.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">181 696 543</span>
+            <button class="copy-btn" onclick="copyCode('181 696 543')">Copy</button>
+          </div>
+        </div>
+
+        <div class="tune-card">
+          <div class="tune-car-name">2025 Toyota Land Cruiser</div>
+          <div class="tune-creator">Tune by <span class="creator-name">GreetedDust8</span> (ollumi Collaborator)</div>
+          <div class="tune-stats">Class A 700 • Off-Road Heavy Hitter • Very Strong</div>
+          <div class="tune-notes">Heavy-duty rugged 4x4 platform offering exceptional rough terrain balance.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">521 035 896</span>
+            <button class="copy-btn" onclick="copyCode('521 035 896')">Copy</button>
+          </div>
+        </div>
+
+        <div class="tune-card">
+          <div class="tune-car-name">2020 Ford Super Duty F-450 DRW Platinum FE</div>
+          <div class="tune-creator">Tune by <span class="creator-name">SR1 Rain</span> (ollumi Collaborator)</div>
+          <div class="tune-stats">Class A 700 • Dually Heavy Hitter • Very Strong</div>
+          <div class="tune-notes">Massive curb weight ploughs through obstacles easily; avoid aggressive clipping on jumps.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">321 456 804</span>
+            <button class="copy-btn" onclick="copyCode('321 456 804')">Copy</button>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
   <!-- 6. Seasonal PR Stunts -->
-  <!-- PR Stunt 1: Speed Trap -->
-  <div class="collapsible-card active" data-card-id="s06_w2_pr_speed" data-category="stunts">
+  <div class="collapsible-card active" data-card-id="s06_w3_pr_stunts" data-category="stunts">
     <div class="card-header">
       <div class="header-left">
         <span class="arrow-indicator">▼</span>
-        <span class="card-title">⚡ PR Stunt - Speed Trap: "Konbini Dash"</span>
+        <span class="card-title">⚡ Seasonal PR Stunts</span>
       </div>
       <div class="badge-group">
-        <span class="badge badge-pts">2 PTS • Nissan B 600 • 94.0 mph</span>
-        <span class="badge badge-stunt">SPEED TRAP</span>
+        <span class="badge badge-pts">10 PTS TOTAL</span>
+        <span class="badge badge-stunt">4 STUNTS</span>
       </div>
     </div>
     <div class="collapsible-content">
-      <div class="item-check-row" data-id="s06_task_pr_speed" data-points="2">
-        <input type="checkbox" id="task_s06_pr_speed">
-        <div class="task-content">
-          <div class="task-title">Speed Trap: Konbini Dash (Target: 94.0 mph / 151.28 km/h)</div>
-          <div class="task-desc">Trigger the speed trap in any B 600 Nissan. Located in the Ito Region near the 7-Eleven.</div>
-          <div class="reward-pill">+2 PTS • Wheelspin</div>
-        </div>
-      </div>
-      <div class="tip-box">
-        <strong>Pro Tip (from BigHeadDjango &amp; ollumi):</strong> BigHeadDjango recommends starting ~580 yards (~530 m) out at the north road T-point intersection in the 1987 Skyline GTS-R for an easy 94+ mph run.
-      </div>
-      <div style="font-weight: 700; color: var(--accent-cyan); font-size: 13px; text-transform: uppercase; margin: 14px 0 6px 0;">
-        Recommended Tunes (Creator Priority Order):
-      </div>
-      <div class="tunes-subgrid">
-        <!-- BigHeadDjango (1st Priority) -->
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-django">BigHeadDjango</span>
-            <div class="tune-car-name">1987 Nissan Skyline GTS-R</div>
-            <div class="tune-detail-text">B Road v1 No Aero Stock Look • Fast top-end momentum for speed traps</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">168 092 392</span>
-            <button class="copy-sm-btn" onclick="copyCode('168 092 392')">Copy</button>
-          </div>
-        </div>
-        <!-- ollumi & Collaborators -->
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-ollumi">ollumi</span>
-            <div class="tune-car-name">1969 Nissan Fairlady Z 432</div>
-            <div class="tune-detail-text">Near Meta B Dirt • Excellent launch speed and high top-end punch</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">687 925 811</span>
-            <button class="copy-sm-btn" onclick="copyCode('687 925 811')">Copy</button>
-          </div>
-        </div>
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-ollumi">ollumi</span>
-            <div class="tune-car-name">1989 Nissan PAO</div>
-            <div class="tune-detail-text">Strong B Dirt • Compact retro icon with quick acceleration</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">112 306 628</span>
-            <button class="copy-sm-btn" onclick="copyCode('112 306 628')">Copy</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- PR Stunt 2: Drift Zone -->
-  <div class="collapsible-card active" data-card-id="s06_w2_pr_drift" data-category="stunts">
-    <div class="card-header">
-      <div class="header-left">
-        <span class="arrow-indicator">▼</span>
-        <span class="card-title">🌀 PR Stunt - Drift Zone: "Shiro Switch"</span>
-      </div>
-      <div class="badge-group">
-        <span class="badge badge-pts">2 PTS • Nissan B 600 • 61,750 PTS</span>
-        <span class="badge badge-stunt">DRIFT ZONE</span>
-      </div>
-    </div>
-    <div class="collapsible-content">
-      <div class="item-check-row" data-id="s06_task_pr_drift" data-points="2">
-        <input type="checkbox" id="task_s06_pr_drift">
+      <!-- Stunt 1 -->
+      <div class="item-check-row" data-id="s06_task_stunt1" data-points="3">
+        <input type="checkbox" id="task_stunt1">
         <div class="task-content">
-          <div class="task-title">Drift Zone: Shiro Switch (Target: 61,750 PTS)</div>
-          <div class="task-desc">Score at least 61,750 Drift Points in any B 600 Nissan.</div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px;">
+            <div class="task-title">Time Attack: Hokubu Time Attack Circuit</div>
+            <span class="badge badge-stunt">3 PTS • TOYOTA C 500 • TARGET: 01:25.000 (85.0S) OR FASTER</span>
+          </div>
+          <div class="task-desc">Complete a clean lap in 85.0 seconds or less in any C-class Toyota.</div>
+          <div class="reward-pill">+3 PTS • Wheelspin</div>
+        </div>
+      </div>
+
+      <!-- Stunt 2 -->
+      <div class="item-check-row" data-id="s06_task_stunt2" data-points="3">
+        <input type="checkbox" id="task_stunt2">
+        <div class="task-content">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px;">
+            <div class="task-title">Drag Meet: Irokawa Quarter Mile Drag Strip</div>
+            <span class="badge badge-stunt">3 PTS • TOYOTA C 500 • TARGET: 00:15.000 (15.0S) OR FASTER</span>
+          </div>
+          <div class="task-desc">
+            Open-world drag event at the Irokawa Quarter Mile. Spawn at the Christmas tree drag lights, pull into an open staging slot, press X to ready up, and launch on green.
+          </div>
+          <div class="reward-pill">+3 PTS • Konbini Door (Car Horn)</div>
+        </div>
+      </div>
+
+      <!-- Stunt 3 -->
+      <div class="item-check-row" data-id="s06_task_stunt3" data-points="2">
+        <input type="checkbox" id="task_stunt3">
+        <div class="task-content">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px;">
+            <div class="task-title">Danger Sign: Alpine Heights</div>
+            <span class="badge badge-stunt">2 PTS • TOYOTA C 500 • TARGET: 721.8 FT (220.0 M)</span>
+          </div>
+          <div class="task-desc">Approach from approximately 343 yards (314 meters) away at the east dirt trail T-junction to carry maximum jump speed.</div>
           <div class="reward-pill">+2 PTS • Wheelspin</div>
         </div>
       </div>
-      <div class="tip-box">
-        <strong>Pro Tip (from BigHeadDjango &amp; ollumi):</strong> Approach the zone from the north side downhill entry to maintain fluid angle and transitions. BigHeadDjango features an AWD dirt drift setup for the 1973 Skyline 2000 GT-R.
-      </div>
-      <div style="font-weight: 700; color: var(--accent-cyan); font-size: 13px; text-transform: uppercase; margin: 14px 0 6px 0;">
-        Recommended Tunes (Creator Priority Order):
-      </div>
-      <div class="tunes-subgrid">
-        <!-- BigHeadDjango (1st Priority) -->
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-django">BigHeadDjango</span>
-            <div class="tune-car-name">1973 Nissan Skyline 2000 GT-R</div>
-            <div class="tune-detail-text">AWD Dirt Drift • Tune by 0xGRIDRUNR &amp; BigHeadDjango • Stock look • Easy angle control</div>
+
+      <!-- Stunt 4 -->
+      <div class="item-check-row" data-id="s06_task_stunt4" data-points="2">
+        <input type="checkbox" id="task_stunt4">
+        <div class="task-content">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px;">
+            <div class="task-title">Speed Trap: Konbini Dash</div>
+            <span class="badge badge-stunt">2 PTS • TOYOTA C 500 • TARGET: 85.0 MPH (136.8 KM/H)</span>
           </div>
-          <div class="sharecode-row">
-            <span class="sc-val">131 499 883</span>
-            <button class="copy-sm-btn" onclick="copyCode('131 499 883')">Copy</button>
-          </div>
-        </div>
-        <!-- ollumi & Collaborators -->
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-ollumi">0xGRIDRUNR</span>
-            <div class="tune-car-name">1989 Nissan Silvia K's</div>
-            <div class="tune-detail-text">Dedicated B Class Drift Setup • Smooth transition snap and controllable lock angle</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">911 790 803</span>
-            <button class="copy-sm-btn" onclick="copyCode('911 790 803')">Copy</button>
-          </div>
+          <div class="task-desc">Approach from approximately 580 yards (530 meters) away at the north road T-junction heading south towards the 7-Eleven.</div>
+          <div class="reward-pill">+2 PTS • Wheelspin</div>
         </div>
       </div>
+
+      <div style="font-size: 13px; font-weight: 700; color: var(--accent-cyan); margin: 16px 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">
+        Recommended PR Stunt Tunes (Toyota C 500 • Creator Priority Order):
+      </div>
+      <div class="tune-card-grid">
+        <!-- BigHeadDjango (Universal Toyota PR Car) -->
+        <div class="tune-card">
+          <div class="tune-car-name">1992 Toyota Celica GT-Four RC ST185</div>
+          <div class="tune-creator">Tune by <span class="creator-name">BigHeadDjango</span> (1st Priority)</div>
+          <div class="tune-stats">Class C 500 • C Road Dirt v1 No Aero Stock Look</div>
+          <div class="tune-notes">One universal tune for all 4 Toyota PR Stunts! Very high C-class top speed, AWD grip, handles dirt and pavement easily.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">121 971 267</span>
+            <button class="copy-btn" onclick="copyCode('121 971 267')">Copy</button>
+          </div>
+        </div>
+
+        <!-- ollumi Tunes -->
+        <div class="tune-card">
+          <div class="tune-car-name">2003 Toyota Celica Sport Specialty II</div>
+          <div class="tune-creator">Tune by <span class="creator-name">JSR Chronic</span> (ollumi Collaborator)</div>
+          <div class="tune-stats">Class C 500 • Time Attack Specialist</div>
+          <div class="tune-notes">Engineered specifically for the Hokubu Time Attack circuit; nimble handling and rapid transition.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">164 343 798</span>
+            <button class="copy-btn" onclick="copyCode('164 343 798')">Copy</button>
+          </div>
+        </div>
+
+        <div class="tune-card">
+          <div class="tune-car-name">2005 Toyota Crown Super Deluxe Taxi</div>
+          <div class="tune-creator">Tune by <span class="creator-name">ollumi</span> (Collaborator)</div>
+          <div class="tune-stats">Class C 500 • C Drag Build • RWD (TCR On)</div>
+          <div class="tune-notes">Runs 12.5 seconds on the Irokawa Quarter Mile (well under 15.0s requirement). Also clears Danger Sign &amp; Speed Trap!</div>
+          <div class="tune-code-row">
+            <span class="tune-code">337 946 140</span>
+            <button class="copy-btn" onclick="copyCode('337 946 140')">Copy</button>
+          </div>
+        </div>
+
+        <div class="tune-card">
+          <div class="tune-car-name">1994 Toyota Celica GT-Four ST205</div>
+          <div class="tune-creator">Tune by <span class="creator-name">ollumi</span> (Collaborator)</div>
+          <div class="tune-stats">Class C 500 • C Dirt / Drag Hybrid</div>
+          <div class="tune-notes">Solid all-arounder capable of 13.0s quarter mile and high-speed off-road approaches.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">195 376 563</span>
+            <button class="copy-btn" onclick="copyCode('195 376 563')">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size: 13px; font-weight: 700; color: var(--accent-yellow); margin: 20px 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">
+        Universal Budget PR Stunt Car &amp; EventLab Blueprints (BigHeadDjango):
+      </div>
+      <div class="tune-card-grid">
+        <div class="tune-card">
+          <div class="tune-car-name">2015 Ultima Evolution Coupe 1020</div>
+          <div class="tune-creator">Tune by <span class="creator-name">BigHeadDjango</span> (Road Setup)</div>
+          <div class="tune-stats">Class X 999 • Road PR Stunts v1 Stock Aero Anti-Lag</div>
+          <div class="tune-notes">Cheapest Autoshow car (150,000 CR) capable of clearing all open PR stunts in the game.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">159 335 837</span>
+            <button class="copy-btn" onclick="copyCode('159 335 837')">Copy</button>
+          </div>
+        </div>
+
+        <div class="tune-card">
+          <div class="tune-car-name">2015 Ultima Evolution Coupe 1020</div>
+          <div class="tune-creator">Tune by <span class="creator-name">BigHeadDjango</span> (Offroad Setup)</div>
+          <div class="tune-stats">Class X 999 • Offroad PR Stunts v1 Stock Aero Anti-Lag</div>
+          <div class="tune-notes">Off-road variant of the 150k Ultima for high-speed dirt speed traps and danger signs.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">100 819 180</span>
+            <button class="copy-btn" onclick="copyCode('100 819 180')">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); border-radius: 8px; padding: 12px 16px; margin-top: 14px; font-size: 13px;">
+        <span style="color: var(--accent-cyan); font-weight: 700;">Easy Win EventLab Blueprints:</span>
+        <span style="color: var(--text-muted); margin-left: 8px;">Road Sprint: <strong>101 638 582</strong> • Road Circuit: <strong>161 320 434</strong> • Dirt Trail Sprint: <strong>850 790 624</strong> • Cross Country Sprint: <strong>146 632 814</strong></span>
+      </div>
+
     </div>
   </div>
 
   <!-- 7. Horizon Life - The Trial -->
-  <div class="collapsible-card active" data-card-id="s06_w2_trial" data-category="racing">
+  <div class="collapsible-card active" data-card-id="s06_w3_trial" data-category="online">
     <div class="card-header">
       <div class="header-left">
         <span class="arrow-indicator">▼</span>
-        <span class="card-title">⚡ Horizon Life - The Trial: "Take It From the Top"</span>
+        <span class="card-title">👥 Horizon Life — The Trial: Full Send</span>
       </div>
       <div class="badge-group">
-        <span class="badge badge-pts">10 PTS • Unlimited Offroad A 700 • Cross Country</span>
-        <span class="badge badge-champ">CO-OP TRIAL</span>
+        <span class="badge badge-pts">10 PTS</span>
+        <span class="badge badge-champ">SUBARU B 600 • DIRT RACING (TRAILS)</span>
       </div>
     </div>
     <div class="collapsible-content">
-      <ul class="meta-list">
-        <li class="meta-item"><span class="meta-label">Race Type:</span><span>Cross Country Racing (Circuits &amp; Trails)</span></li>
-        <li class="meta-item"><span class="meta-label">Car Restrictions:</span><span>Unlimited Offroad (Class A 700)</span></li>
-        <li class="meta-item"><span class="meta-label">Tracks / Routes:</span><span>Ruriko-ji Cross Country, Soni Highlands Cross Country, Shimanoyama Cross Country</span></li>
-      </ul>
       <div class="item-check-row" data-id="s06_task_trial" data-points="10">
-        <input type="checkbox" id="task_s06_trial">
+        <input type="checkbox" id="task_trial">
         <div class="task-content">
-          <div class="task-title">Co-op Championship: Ruriko-ji Cross Country, Soni Highlands Cross Country, Shimanoyama Cross Country</div>
-          <div class="task-desc">Defeat Unbeatable Drivatars with a team of fellow players across 3 rugged cross-country courses.</div>
-          <div class="reward-pill">+10 PTS • 2020 Mercedes-AMG GT Black Series</div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px;">
+            <div class="task-title">The Trial: Full Send (Co-op Championship vs Unbeatable Drivatars)</div>
+            <span class="badge badge-pts">10 PTS • 2023 TOYOTA CAMRY TRD</span>
+          </div>
+          <div class="task-desc">
+            Team up with 5 players to beat the Drivatars across 3 stunning dirt trails:
+            <br>• Race 1: Hokubu Trail (Dirt Racing • Point-to-Point Trail, Morning | Clear)
+            <br>• Race 2: Waterfall Trail (Dirt Racing • Point-to-Point Trail, Early Afternoon | Fog)
+            <br>• Race 3: Nukabira Trail (Dirt Racing • Point-to-Point Trail, Late Afternoon | Light Precipitation)
+            <br><em>Tip: Co-op AI difficulty is fixed at Novice/Expert. Take position 3+ early and slow down the lead AI to help teammates pass.</em>
+          </div>
+          <div class="reward-pill">+10 PTS • 2023 Toyota Camry TRD (Autoshow Value: 31,000 CR)</div>
         </div>
       </div>
-      <div class="tip-box">
-        <strong>Pro Tip (from BigHeadDjango &amp; ollumi):</strong> BigHeadDjango's 1993 Toyota #1 Baja Truck and 2016 Jeep Trailcat (v3 better suspension) are superb over rough mud and jumps. Blocking and slowing AI from position 3 or higher guarantees the team win.
+
+      <div style="font-size: 13px; font-weight: 700; color: var(--accent-cyan); margin: 16px 0 10px 0; text-transform: uppercase; letter-spacing: 0.5px;">
+        Recommended Trial Tunes (Subaru B 600 • Creator Priority Order):
       </div>
-      <div style="font-weight: 700; color: var(--accent-cyan); font-size: 13px; text-transform: uppercase; margin: 14px 0 6px 0;">
-        Recommended Tunes (Creator Priority Order):
-      </div>
-      <div class="tunes-subgrid">
+      <div class="tune-card-grid">
         <!-- BigHeadDjango (1st Priority) -->
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-django">BigHeadDjango</span>
-            <div class="tune-car-name">1993 Toyota #1 T100 Baja Truck</div>
-            <div class="tune-detail-text">A Dirt CC v1 No Aero Stock Look • 7 gears • High stability over jumps</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">528 153 143</span>
-            <button class="copy-sm-btn" onclick="copyCode('528 153 143')">Copy</button>
-          </div>
-        </div>
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-django">BigHeadDjango</span>
-            <div class="tune-car-name">2016 Jeep Trailcat</div>
-            <div class="tune-detail-text">A Dirt CC v3 True Purist No Aero • v3 better suspension • High profile rear tires • Stock engine</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">114 785 466</span>
-            <button class="copy-sm-btn" onclick="copyCode('114 785 466')">Copy</button>
+        <div class="tune-card">
+          <div class="tune-car-name">2004 Subaru Impreza WRX STI</div>
+          <div class="tune-creator">Tune by <span class="creator-name">BigHeadDjango</span> (1st Priority)</div>
+          <div class="tune-stats">Class B 600 • B Dirt CC v1 No Aero Stock Look</div>
+          <div class="tune-notes">Strong acceleration; high B-class top speed; stock look; very reliable on all 3 trails.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">528 993 509</span>
+            <button class="copy-btn" onclick="copyCode('528 993 509')">Copy</button>
           </div>
         </div>
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-django">BigHeadDjango</span>
-            <div class="tune-car-name">2016 RJ Anderson #37 Polaris RZR Pro 2 Truck</div>
-            <div class="tune-detail-text">A Dirt CC v3 No Aero Stock Look • Agile buggy rotation • Stock engine</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">889 567 125</span>
-            <button class="copy-sm-btn" onclick="copyCode('889 567 125')">Copy</button>
+
+        <div class="tune-card">
+          <div class="tune-car-name">2008 Subaru Impreza WRX STI</div>
+          <div class="tune-creator">Tune by <span class="creator-name">BigHeadDjango</span> (1st Priority)</div>
+          <div class="tune-stats">Class B 600 • B Dirt CC v1 No Aero Stock Look</div>
+          <div class="tune-notes">Exceptionally smooth dirt handling and balanced traction in foggy conditions.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">880 557 389</span>
+            <button class="copy-btn" onclick="copyCode('880 557 389')">Copy</button>
           </div>
         </div>
+
+        <div class="tune-card">
+          <div class="tune-car-name">1990 Subaru Legacy RS</div>
+          <div class="tune-creator">Tune by <span class="creator-name">BigHeadDjango</span> (1st Priority)</div>
+          <div class="tune-stats">Class B 600 • B Dirt CC v1 No Aero Stock Look</div>
+          <div class="tune-notes">Smooth power delivery; predictable rally sliding; great momentum through corners.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">361 677 674</span>
+            <button class="copy-btn" onclick="copyCode('361 677 674')">Copy</button>
+          </div>
+        </div>
+
         <!-- ollumi & Collaborators -->
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-ollumi">ollumi</span>
-            <div class="tune-car-name">2015 Honda Ridgeline Baja Trophy Truck</div>
-            <div class="tune-detail-text">Very Strong Tier • Excellent suspension travel over rough terrain and massive jumps</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">976 780 230</span>
-            <button class="copy-sm-btn" onclick="copyCode('976 780 230')">Copy</button>
-          </div>
-        </div>
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-ollumi">ollumi</span>
-            <div class="tune-car-name">2022 Subaru BRZ Forza Edition</div>
-            <div class="tune-detail-text">Strong Setup • Nimble custom offroad coupe with sharp turn-in</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">112 600 649</span>
-            <button class="copy-sm-btn" onclick="copyCode('112 600 649')">Copy</button>
+        <div class="tune-card">
+          <div class="tune-car-name">2013 Subaru BRZ</div>
+          <div class="tune-creator">Tune by <span class="creator-name">ollumi</span> (Collaborator)</div>
+          <div class="tune-stats">Class B 600 • Dirt Momentum Build • Very Strong</div>
+          <div class="tune-notes">Superb momentum car; glides effortlessly through the flowing curves of Hokubu and Waterfall Trail.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">179 134 478</span>
+            <button class="copy-btn" onclick="copyCode('179 134 478')">Copy</button>
           </div>
         </div>
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-ollumi">ollumi</span>
-            <div class="tune-car-name">1993 Toyota #1 T100 Baja Truck</div>
-            <div class="tune-detail-text">Strong Setup • Legendary trophy truck with robust torque and stable landings</div>
-          </div>
-          <div class="sharecode-row">
-            <span class="sc-val">150 303 589</span>
-            <button class="copy-sm-btn" onclick="copyCode('150 303 589')">Copy</button>
+
+        <div class="tune-card">
+          <div class="tune-car-name">2013 Subaru BRZ</div>
+          <div class="tune-creator">Tune by <span class="creator-name">Jeb Rankin G</span> (ollumi Collaborator)</div>
+          <div class="tune-stats">Class B 600 • Stock Look &amp; Engine • Very Strong</div>
+          <div class="tune-notes">One of the nastiest original-look B dirt cars; pure mechanical grip without ugly Forza aero.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">744 727 069</span>
+            <button class="copy-btn" onclick="copyCode('744 727 069')">Copy</button>
           </div>
         </div>
-        <div class="tune-pill-card">
-          <div>
-            <span class="tuner-badge tb-ollumi">Noa Miyako</span>
-            <div class="tune-car-name">2016 Jeep Trailcat</div>
-            <div class="tune-detail-text">Strong Circuits • Hellcat V8 power engineered for aggressive high-speed climbing</div>
+
+        <div class="tune-card">
+          <div class="tune-car-name">1994 Subaru Vivio RX-R</div>
+          <div class="tune-creator">Tune by <span class="creator-name">ollumi</span> (Collaborator)</div>
+          <div class="tune-stats">Class B 600 • Kei Car Rocket • Strong</div>
+          <div class="tune-notes">Tiny, lightweight rocket car with rapid directional changes on narrow trails.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">771 574 609</span>
+            <button class="copy-btn" onclick="copyCode('771 574 609')">Copy</button>
           </div>
-          <div class="sharecode-row">
-            <span class="sc-val">386 037 734</span>
-            <button class="copy-sm-btn" onclick="copyCode('386 037 734')">Copy</button>
+        </div>
+
+        <div class="tune-card">
+          <div class="tune-car-name">1990 Subaru Legacy RS</div>
+          <div class="tune-creator">Tune by <span class="creator-name">ollumi</span> (Collaborator)</div>
+          <div class="tune-stats">Class B 600 • Purist AWD Setup • Strong</div>
+          <div class="tune-notes">Consistent and forgiving dirt trial performer with high stability in wet mud.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">110 000 468</span>
+            <button class="copy-btn" onclick="copyCode('110 000 468')">Copy</button>
+          </div>
+        </div>
+
+        <div class="tune-card">
+          <div class="tune-car-name">1980 Subaru BRAT GL</div>
+          <div class="tune-creator">Tune by <span class="creator-name">TheDannny</span> (ollumi Collaborator)</div>
+          <div class="tune-stats">Class B 600 • Classic Utility Ute Build</div>
+          <div class="tune-notes">Charming vintage pickup truck build that punches well above its weight class.</div>
+          <div class="tune-code-row">
+            <span class="tune-code">877 740 449</span>
+            <button class="copy-btn" onclick="copyCode('877 740 449')">Copy</button>
           </div>
         </div>
       </div>
@@ -1145,32 +1141,27 @@
   </div>
 
   <!-- 8. Horizon Play Multiplayer Events -->
-  <div class="collapsible-card active" data-card-id="s06_w2_horizon_play" data-category="online">
+  <div class="collapsible-card active" data-card-id="s06_w3_play" data-category="online">
     <div class="card-header">
       <div class="header-left">
         <span class="arrow-indicator">▼</span>
         <span class="card-title">🌐 Horizon Play Events</span>
       </div>
       <div class="badge-group">
-        <span class="badge badge-pts">3 PTS TOTAL</span>
-        <span class="badge badge-stunt">MULTIPLAYER</span>
+        <span class="badge badge-pts">ONLINE LIFE</span>
+        <span class="badge badge-stunt">THE TRIAL FEATURED</span>
       </div>
     </div>
     <div class="collapsible-content">
-      <div class="item-check-row" data-id="s06_task_play" data-points="3">
-        <input type="checkbox" id="task_s06_play">
-        <div class="task-content">
-          <div class="task-title">Horizon Stunt Party: Complete Any Stunt Party Event</div>
-          <div class="task-desc">Participate in and complete any hourly Horizon Stunt Party (starts at the top of the hour with a 10-minute sign-up window; rotation: Chaos, Drift, Speed, Wreckage).</div>
-          <div class="reward-pill">+3 PTS • Black Carbon Fiber Helmet (clothing)</div>
-        </div>
+      <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); border-radius: 8px; padding: 14px 18px; font-size: 13px; color: var(--text-muted);">
+        <strong style="color: var(--accent-cyan);">Online Schedule Note:</strong> No additional standalone Horizon Play multiplayer event (e.g. Stunt Party or Drift Championship) is scheduled for this Winter season. <strong>The Trial: Full Send (10 PTS)</strong> serves as the primary online multiplayer feature for Series 06 Week 3.
       </div>
     </div>
   </div>
 
   <footer>
-    <p>Forza Horizon 6 Festival Playlist &amp; Community Tunes Tracker • Series 06 Week 2 (Autumn)</p>
-    <p style="margin-top: 4px; font-size: 11px;">Tuning data sourced from Reddit r/ForzaHorizon creators: <a href="https://www.reddit.com/r/ForzaHorizon/" target="_blank">awesomebeau</a>, <a href="https://www.reddit.com/r/forza/comments/1x6tyvs/series_06_week_2_autumn_seasonal_tunes_horizon/" target="_blank">BigHeadDjango</a>, <a href="https://www.reddit.com/r/ForzaHorizon/" target="_blank">PaperHeartZero</a>, and <a href="https://www.reddit.com/r/ForzaHorizon/comments/1x6lp16/fh6_series_6_autumn_breakdown_and_rewards/" target="_blank">ollumi &amp; Collaborators</a>.</p>
+    <p>Forza Horizon 6 Festival Playlist &amp; Community Tunes Tracker • Series 06 Week 3 (Winter)</p>
+    <p style="margin-top: 4px; font-size: 11px;">Tuning data sourced from Reddit r/ForzaHorizon creators: <a href="https://www.reddit.com/r/ForzaHorizon/" target="_blank">awesomebeau</a>, <a href="https://www.reddit.com/r/ForzaHorizon/comments/1xcimbx/fh6_series_6_winter_breakdown_and_rewards/" target="_blank">BigHeadDjango</a>, <a href="https://www.reddit.com/r/ForzaHorizon/" target="_blank">PaperHeartZero</a>, and <a href="https://www.reddit.com/r/ForzaHorizon/comments/1xcimbx/fh6_series_6_winter_breakdown_and_rewards/" target="_blank">ollumi &amp; Collaborators</a>.</p>
   </footer>
 
 </div>
@@ -1179,7 +1170,7 @@
 <div id="toast">Share Code copied to clipboard!</div>
 
 <script>
-  const STORAGE_PREFIX = "fh6_s06_w2_v2_";
+  const STORAGE_PREFIX = "fh6_s06_w3_v1_";
   const checkboxes = document.querySelectorAll('.item-check-row input[type="checkbox"]');
   const progressBarFill = document.getElementById("progressFill");
   const completionText = document.getElementById("completionProgressText");
@@ -1258,66 +1249,64 @@
     }
   }
 
-  // Collapsible Accordion logic
+  // Initial Progress Calculation
+  updateProgress();
+
+  // Collapsible Cards Interactivity
   const cards = document.querySelectorAll('.collapsible-card');
   cards.forEach(function(card) {
-    const cardId = card.getAttribute('data-card-id');
     const header = card.querySelector('.card-header');
-    
-    // Load collapse state
-    const isCollapsed = localStorage.getItem(STORAGE_PREFIX + "collapse_" + cardId);
-    if (isCollapsed === 'true') {
-      card.classList.add('collapsed');
+    const cardId = card.getAttribute('data-card-id');
+    const arrow = card.querySelector('.arrow-indicator');
+
+    // Restore persisted collapse state
+    const savedState = localStorage.getItem(STORAGE_PREFIX + "collapse_" + cardId);
+    if (savedState === 'collapsed') {
+      card.classList.remove('active');
+      if (arrow) arrow.textContent = '►';
     }
 
     header.addEventListener('click', function() {
-      card.classList.toggle('collapsed');
-      localStorage.setItem(STORAGE_PREFIX + "collapse_" + cardId, card.classList.contains('collapsed'));
-      checkToggleAllButtonText();
+      card.classList.toggle('active');
+      const isExpanded = card.classList.contains('active');
+      if (arrow) arrow.textContent = isExpanded ? '▼' : '►';
+      localStorage.setItem(STORAGE_PREFIX + "collapse_" + cardId, isExpanded ? 'expanded' : 'collapsed');
     });
   });
 
-  // Toggle All Button
-  const toggleAllBtn = document.getElementById("toggleAllBtn");
+  // Global Collapse All / Expand All Toggle
+  const toggleAllBtn = document.getElementById('toggleAllBtn');
   let allCollapsed = false;
-
-  function checkToggleAllButtonText() {
-    const total = cards.length;
-    const collapsedCount = document.querySelectorAll('.collapsible-card.collapsed').length;
-    if (collapsedCount === total) {
-      toggleAllBtn.textContent = "Expand All ▴";
-      allCollapsed = true;
-    } else {
-      toggleAllBtn.textContent = "Collapse All ▾";
-      allCollapsed = false;
-    }
-  }
 
   toggleAllBtn.addEventListener('click', function() {
     allCollapsed = !allCollapsed;
     cards.forEach(function(card) {
       const cardId = card.getAttribute('data-card-id');
+      const arrow = card.querySelector('.arrow-indicator');
       if (allCollapsed) {
-        card.classList.add('collapsed');
-        localStorage.setItem(STORAGE_PREFIX + "collapse_" + cardId, 'true');
+        card.classList.remove('active');
+        if (arrow) arrow.textContent = '►';
+        localStorage.setItem(STORAGE_PREFIX + "collapse_" + cardId, 'collapsed');
       } else {
-        card.classList.remove('collapsed');
-        localStorage.setItem(STORAGE_PREFIX + "collapse_" + cardId, 'false');
+        card.classList.add('active');
+        if (arrow) arrow.textContent = '▼';
+        localStorage.setItem(STORAGE_PREFIX + "collapse_" + cardId, 'expanded');
       }
     });
-    toggleAllBtn.textContent = allCollapsed ? "Expand All ▴" : "Collapse All ▾";
+    toggleAllBtn.textContent = allCollapsed ? 'Expand All ▸' : 'Collapse All ▾';
   });
 
-  // Filter category buttons
+  // Category Filtering
   const filterBtns = document.querySelectorAll('.filter-btn');
   filterBtns.forEach(function(btn) {
     btn.addEventListener('click', function() {
-      filterBtns.forEach(function(b) { b.classList.remove('active'); });
+      filterBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const filter = btn.getAttribute('data-filter');
+
       cards.forEach(function(card) {
-        const cat = card.getAttribute('data-category');
-        if (filter === 'all' || cat === filter) {
+        const category = card.getAttribute('data-category');
+        if (filter === 'all' || category === filter) {
           card.style.display = 'block';
         } else {
           card.style.display = 'none';
@@ -1326,34 +1315,43 @@
     });
   });
 
-  // Live Search filter
-  const eventSearch = document.getElementById("eventSearch");
-  eventSearch.addEventListener('input', function(e) {
-    const q = e.target.value.toLowerCase().trim();
+  // Live Search Filter
+  const searchInput = document.getElementById('eventSearch');
+  searchInput.addEventListener('input', function() {
+    const q = searchInput.value.toLowerCase().trim();
     cards.forEach(function(card) {
-      const text = card.textContent.toLowerCase();
-      if (!q || text.includes(q)) {
+      if (!q) {
         card.style.display = 'block';
+        return;
+      }
+      const text = card.textContent.toLowerCase();
+      if (text.includes(q)) {
+        card.style.display = 'block';
+        card.classList.add('active');
+        const arrow = card.querySelector('.arrow-indicator');
+        if (arrow) arrow.textContent = '▼';
       } else {
         card.style.display = 'none';
       }
     });
   });
 
-  // Share code copy helper
-  window.copyCode = function(code) {
+  // Copy Code Functionality
+  function copyCode(code) {
     navigator.clipboard.writeText(code).then(function() {
-      toast.textContent = "Share Code " + code + " copied to clipboard!";
-      toast.className = "show";
-      setTimeout(function() { toast.className = toast.className.replace("show", ""); }, 2500);
-    }).catch(function(err) {
-      console.error("Clipboard copy failed:", err);
+      showToast("Copied " + code + " to clipboard!");
+    }).catch(function() {
+      showToast("Share Code: " + code);
     });
-  };
+  }
 
-  // Initial Run
-  updateProgress();
-  checkToggleAllButtonText();
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.className = "show";
+    setTimeout(function() {
+      toast.className = toast.className.replace("show", "");
+    }, 2500);
+  }
 </script>
 
 </body>
