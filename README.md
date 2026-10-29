@@ -2,16 +2,16 @@
 
 Interactive, responsive dashboards and reference guides for weekly *Forza Horizon 6* Festival Playlists.
 
-🌐 **Live Dashboard:** [https://yusuke614.github.io/fh6-festival-playlists/](https://yusuke614.github.io/fh6-festival-playlists/)
+🌐 **Live Dashboard:** [https://Yusuke614.github.io/fh6-festival-playlists/](https://Yusuke614.github.io/fh6-festival-playlists/)
 
 ---
 
 ## Current Active Season
 
 * **Series:** Series 06 — *Horizon Meets*
-* **Season:** Week 3 — Winter (Dry Season)
-* **Active Window:** October 22 – October 29, 2026
-* **Season Rewards:** 2004 Saleen S7 (20 Pts) • 1986 Audi #2 Audi Sport quattro S1 (40 Pts)
+* **Season:** Week 4 — Spring (Hot Season)
+* **Active Window:** October 29 – November 5, 2026
+* **Season Rewards:** 1968 Holden Monaro GTS 327 (20 Pts) • 1991 Honda CR-X SiR (40 Pts)
 * **Series Rewards:** 2025 BMW M4 CS (80 Pts) • 2015 Koenigsegg One:1 (160 Pts)
 
 ---
@@ -32,20 +32,20 @@ Interactive, responsive dashboards and reference guides for weekly *Forza Horizo
 fh6-festival-playlists/
 ├── README.md                                         # Project documentation
 ├── index.html                                        # Currently active seasonal dashboard
-├── FH6_Series06_Week3_Winter_Dashboard_Main_v4.html   # Season archive copy (Revision v4)
-└── FH6_Series06_Week3_Winter_Dashboard_Main_v4.txt    # Plain-text companion guide (Revision v4)
+├── FH6_Series06_Week4_Spring_Dashboard_Main_v2.html   # Season archive copy (Revision v2)
+└── FH6_Series06_Week4_Spring_Dashboard_Main_v2.txt    # Plain-text companion guide (Revision v2)
 ```
 
 ---
 
 ## Tuning Credits & Community Attribution
 
-Tuning configurations and share codes are compiled from respected community creators across Reddit [r/ForzaHorizon](https://www.reddit.com/r/ForzaHorizon/) and [r/forza](https://www.reddit.com/r/forza/):
+Tuning configurations and share codes are compiled from respected community creators across Reddit [r/ForzaHorizon](https://www.reddit.com/r/ForzaHorizon/), [r/ForzaHorizon6](https://www.reddit.com/r/ForzaHorizon6/), and [r/forza](https://www.reddit.com/r/forza/):
 
-* **awesomebeau** (Retired / Stepped Down)
-* **BigHeadDjango** (Active • 16 Tunes, PR Stunts & Blueprints)
-* **PaperHeartZero** (On Break • Recovering)
-* **ollumi & Collaborators** (Active • including Destrukdi, Grandma Driving, GreetedDust8, Jeb Rankin G, JSR Chronic, K1Z Bard, LetzeLU, Mustuff124, Noa Seako, Rotgoblins, SR1 Rain, Syokora996, TheDannny, ZVTCJAU, and others)
+* **awesomebeau** (Hiatus / Stepped Down)
+* **BigHeadDjango** (Active • 12 Tunes, PR Stunts & Blueprints)
+* **PaperHeartZero** (On Break • Personal Issues)
+* **ollumi & Collaborators** (Active • including Grandma Driving, JSR Chronic, Kokoretsi6137, MayuriSakura, OxGRIDRUNR, and others)
 
 Playlist objectives and event schedules are sourced from official *Forza Horizon 6* festival updates.
 
