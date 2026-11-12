@@ -9,9 +9,9 @@ Interactive, responsive dashboards and reference guides for weekly *Forza Horizo
 ## Current Active Season
 
 * **Series:** Series 07 — *City Life*
-* **Season:** Week 1 — Summer (Wet Season)
-* **Active Window:** November 5 – November 12, 2026
-* **Season Rewards:** 2025 Citroën Ami (15 Pts) • 1996 Toyota Starlet Glanza V (30 Pts)
+* **Season:** Week 2 — Autumn (Storm Season)
+* **Active Window:** November 12 – November 19, 2026
+* **Season Rewards:** 2011 Alfa Romeo Giulietta Quadrifoglio Verde (15 Pts) • 2016 Abarth 695 Biposto (30 Pts)
 * **Series Rewards:** 2016 Honda S660 Alpha (60 Pts) • 1970 Honda N600 (120 Pts)
 
 ---
@@ -32,8 +32,8 @@ Interactive, responsive dashboards and reference guides for weekly *Forza Horizo
 fh6-festival-playlists/
 ├── README.md                                         # Project documentation
 ├── index.html                                        # Currently active seasonal dashboard
-├── FH6_Series07_Week1_Summer_Dashboard_Main_v1.html   # Season archive copy (Revision v1)
-└── FH6_Series07_Week1_Summer_Dashboard_Main_v1.txt    # Plain-text companion guide (Revision v1)
+├── FH6_Series07_Week2_Autumn_Dashboard_Main_v1.html   # Season archive copy (Revision v1)
+└── FH6_Series07_Week2_Autumn_Dashboard_Main_v1.txt    # Plain-text companion guide (Revision v1)
 ```
 
 ---
@@ -43,9 +43,9 @@ fh6-festival-playlists/
 Tuning configurations and share codes are compiled from respected community creators across Reddit [r/ForzaHorizon](https://www.reddit.com/r/ForzaHorizon/) and [r/forza](https://www.reddit.com/r/forza/):
 
 * **awesomebeau** (Hiatus / Stepped Down)
-* **BigHeadDjango** (Active • 14 Tunes, PR Stunts & Blueprints)
+* **BigHeadDjango** (Active • 11 Tunes, PR Stunts & Blueprints)
 * **PaperHeartZero** (On Break • Personal Issues)
-* **ollumi & Collaborators** (Active • including ATK Mang0, Cirno1X, CTE seasons, ESV Rapture, K1Z Howzer, LetzeLU, LittleBallancer, lphanhan, MayuriSakura, MSR Sola, Noa Miyako, TheDannny, Tortio3225, zombiejesus52, and others)
+* **ollumi & Collaborators** (Active • including GreetedDust8, K1Z Bard, LetzeLU, LogikJ, Mustuff124, staring contest, TPC Koneko, Wilfredo OvO, and others)
 
 Playlist objectives and event schedules are sourced from official *Forza Horizon 6* festival updates.
 
